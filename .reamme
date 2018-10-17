@@ -1,0 +1,9 @@
+php artisan make:controller Admin/ArticlesController --model=Article --resource
+
+php artisan make:model Project --migration --controller --resource
+
+php artisan make:model Project -mcr
+
+php artisan krlove:generate:model Videos --table-name=videos
+
+php artisan make:view articles --resource --extends=layouts.authorized --section="title:This is my title" --section=content

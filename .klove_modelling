@@ -1,0 +1,32 @@
+
+php artisan krlove:generate:model WalletTransaction --table-name=wallet_transactions
+
+php artisan krlove:generate:model Videos --table-name=vouchers_pricing
+php artisan krlove:generate:model Videos --table-name=vouchers
+php artisan krlove:generate:model Videos --table-name=videos
+php artisan krlove:generate:model Videos --table-name=videos
+php artisan krlove:generate:model Videos --table-name=videos
+php artisan krlove:generate:model Videos --table-name=videos
+php artisan krlove:generate:model Videos --table-name=videos
+php artisan krlove:generate:model Videos --table-name=videos
+php artisan krlove:generate:model Videos --table-name=videos
+php artisan krlove:generate:model Videos --table-name=videos
+php artisan krlove:generate:model Videos --table-name=videos
+php artisan krlove:generate:model Videos --table-name=videos
+php artisan krlove:generate:model Videos --table-name=videos
+php artisan krlove:generate:model Videos --table-name=videos
+php artisan krlove:generate:model Videos --table-name=videos
+php artisan krlove:generate:model Videos --table-name=videos
+php artisan krlove:generate:model Videos --table-name=videos
+php artisan krlove:generate:model Videos --table-name=videos
+php artisan krlove:generate:model Videos --table-name=videos
+php artisan krlove:generate:model Videos --table-name=videos
+php artisan krlove:generate:model Videos --table-name=videos
+php artisan krlove:generate:model Videos --table-name=videos
+php artisan krlove:generate:model Videos --table-name=videos
+php artisan krlove:generate:model Videos --table-name=videos
+
+
+
+
+
