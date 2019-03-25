@@ -33,7 +33,7 @@ class Kernel extends HttpKernel
             \Illuminate\Session\Middleware\StartSession::class,
             // \Illuminate\Session\Middleware\AuthenticateSession::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
-            \App\Http\Middleware\VerifyCsrfToken::class,
+            // \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
 
@@ -64,6 +64,8 @@ class Kernel extends HttpKernel
         'webby' => \App\Http\Middleware\WebMiddleware::class,
         'calls' => \App\Http\Middleware\CallsMiddleware::class,
         'admin' => \App\Http\Middleware\AdminMiddleware::class,
+        'admins' => \App\Http\Middleware\AuthenticateAdmins::class,
+        'theweb' => \App\Http\Middleware\RidirectIfAuthenticateAdmins::class,
 
     ];
 
