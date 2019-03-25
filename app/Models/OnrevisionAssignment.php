@@ -6,22 +6,35 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property int $id
- * @property int $assignment_id
  * @property int $user_id
- * @property string $reason
+ * @property int $admin_id
+ * @property int $review_id
+ * @property string $reason_revised
+ * @property int $remember_token
+ * @property int $active
+ * @property int $warn
  * @property int $status
- * @property string $updated_at
  * @property string $created_at
+ * @property string $updated_at
  * @property string $deleted_at
+ * @property Admin $admin
+ * @property Onreviewassignment $onreviewassignment
  * @property User $user
- * @property Assignment $assignment
+ * @property RejectedAssg[] $rejectedAssgs
  */
-class OnrevisionAssignment extends Model
+class Onrevisionassignment extends Model
 {
+    /**
+     * The table associated with the model.
+     * 
+     * @var string
+     */
+    protected $table = 'onrevisionassignment';
+
     /**
      * @var array
      */
-    protected $fillable = ['assignment_id', 'user_id', 'reason', 'status', 'updated_at', 'created_at', 'deleted_at'];
+    protected $fillable = ['user_id', 'admin_id', 'review_id', 'reason_revised', 'remember_token', 'active', 'warn', 'status', 'created_at', 'updated_at', 'deleted_at'];
 
     /**
      * The connection name for the model.
@@ -33,16 +46,32 @@ class OnrevisionAssignment extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
+    public function admin()
+    {
+        return $this->belongsTo('App\Models\Admin');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function onreviewassignment()
+    {
+        return $this->belongsTo('App\Models\Onreviewassignment', 'review_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function user()
     {
         return $this->belongsTo('App\Models\User');
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function assignment()
+    public function rejectedAssgs()
     {
-        return $this->belongsTo('App\Models\Assignment');
+        return $this->hasMany('App\Models\RejectedAssg', 'revision_id');
     }
 }

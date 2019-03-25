@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Auth;
+namespace App\Http\Controllers\Web\Auth;
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -34,7 +35,7 @@ class RegisterController extends Controller
 
     public function showRegistrationForm()
     {
-        return view('Admin.auth.register');
+        return view('Web.auth.register');
     }
 
 
@@ -104,7 +105,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $user =  User::create([
             'fname' => $data['fname'],
             'lname' => $data['lname'],
             'sname' => $data['sname'],
@@ -116,7 +117,12 @@ class RegisterController extends Controller
             'age' => $data['age'],
             'mobile' => $data['mobile'],
             'address' => $data['address'],
+            'roles' => 'admin',
         ]);
+        // $user
+        //     ->roles()
+        //     ->attach(Role::where('username', 'user')->first());
+     return $user;
     }
     //Get the guard to authenticate user
    protected function guard()

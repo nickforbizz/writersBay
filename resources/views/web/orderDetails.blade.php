@@ -1,4 +1,41 @@
 @extends('web.layoutsWeb.appWriter')
+@section('top-styles')
+    <style>
+        .allOrder{
+            display: flex;
+            background-color: #f5f4f1;
+            padding: 15px;
+        }
+        .mainOrder{
+            flex: 4;
+            order: 2;
+            padding: 0 15px 0 15px;
+        }
+        .orderSide1{
+            flex: 1;
+            order: 1;
+            padding: 0 15px 0 15px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+        }
+        .orderSide2{
+            flex: 2;
+            order: 3;
+            padding: 0 0 0 15px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+
+        }
+        .ddoc{
+            float: right;
+            padding: 7px;
+            background-color: antiquewhite;
+            color: black;
+        }.md{
+            margin-bottom: 10px;
+         }
+    </style>
+    @endsection
 
 @section('content')
 <div class="col-12 main">
@@ -21,47 +58,75 @@
         </div>
     </div><!--/.row-->
      <br> <br>
-    <div class="row">
+    <div class="row container-fluid">
         <div style="margin:40px"></div>
+        <div class="allOrder">
+        <div class="mainOrder ">
+            <h3> Order Details</h3>
+            <hr>
+            <p>
+                <h4><b>Title</b></h4>
+                {{ $order->title }}
+            </p>
+            <p>
+                <h4><b>Description</b> </h4>
+                {{ $order->description }}
+            </p>
+            <div>
+            <h4><b>Medias</b></h4>
+
+            @php( $idd = \App\Models\MediaFilesAssg::where('assg_id',$order->id)->where('status', 1)->get())
+            @if( !$idd->isEmpty())
+                <ul class="list-group">
+                @foreach(\App\Models\MediaFilesAssg::where('assg_id',$order->id)->where('status', 1)->get() as $media)
+                    <div class="md">
+                        <li class="list-group-item">{{ $media->name }} <span class="badge ddoc"> <a href="">Download</a> </span></li>
+                        <li class="list-group-item">Type<span class="badge"> {{ $media->type }} </span></li>
+                    </div>
+                @endforeach
+                </ul>
+            @else
+            <p class="lead">No Media for this Order</p>
+            @endif
+            </div>
+        </div>
+         {{--<div class="orderSide1">--}}
+             {{--<h3>side 1</h3>--}}
+             {{--<p>--}}
+                 {{--Lorem ipsum dolor sit amet, consectetur adipisicing elit. Esse illum sapiente veritatis.--}}
+                 {{--Aliquid aperiam dolorem, dolores doloribus est illum itaque, minima nisi perferendis quidem quos sequi,--}}
+                 {{--soluta tempore tenetur veniam!--}}
+             {{--</p>--}}
+        {{--</div>--}}
+        <div class="orderSide2">
+            <h3>Additional Details</h3>
+            <hr>
+            <p>
+                <h5><b>Required Pages</b></h5>
+                {{ $order->pages }}
+            </p>
+            <p>
+                <h5><b>Amount</b></h5>
+                {{ $order->amount }}
+            </p>
+            <p>
+            <h5><b>Date Posted</b></h5>
+            {{ $order->created_at->diffForHumans() }}
+            </p>
+            <p>
+            <h5><b>Deadline</b></h5>
+            {{ $order->deadline }}
+            </p>
+            <div style="margin-bottom: 70px">
+            <div class="pull-right" style="margin-right:20px;">
+                <button class="btn btn-success take-order" data-id="{{ $order->id }}">Take</button>
+            </div>
+
+            </div>
+        </div>
+        </div>
         <div class="col-md-10 col-md-offset-1">
 
-            @foreach (App\Models\Assignment::where('active', 1)->get() as $order)
-
-                <div class="panel panel-default" style="background-color:#b9c4c8">
-                    <div class="panel-heading" style="background-color:#d3e1db">
-                        <div class="pull-right">
-                            <h6>Deadline <p style="font-size: 15px">{{ $order->deadline}} </p></h6>
-
-                        </div>
-                        <h4> <b>Title</b> {{ $order->title }}</h4>
-                    </div>
-                    <div class="panel-body" style="padding:0px 10px 5px 15px !important;">
-                        <h4> <u>Description</u> </h4>
-                        <p class="">{{ $order->description }}</p>
-                        <div class="row">
-                        <div class="col-12">
-                            <div class="pull-right" style="margin-right:20px;">
-                            <button class="btn btn-success take-order" data-id="{{ $order->id }}">Take</button>
-                            </div>
-                            <div class="pull-left" style="margin-left:10px;">
-                                <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#order-more{{ $order->id }}">more</button>
-
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <div id="order-more{{ $order->id }}" class="collapse" style="padding:30px 20px 5px 15px !important;">
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                                sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                            </div>
-                        </div>
-                    </div>
-                    </div>
-                </div>
-
-            @endforeach
 
         </div>
     </div>
@@ -69,12 +134,13 @@
 </div>
 @endsection
 
+
 @section('bottom-scripts')
     <script>
 
-    $(document).ready(function () {
-         // Take Order
-         $(document).on("click",".take-order", function () {
+        $(document).ready(function () {
+            // Take Order
+            $(document).on("click",".take-order", function () {
                 var order_id = $(this).attr("data-id");
                 var writer_id = {{ Auth::guard('web')->user()->id  }}
                 $.ajax({
@@ -91,9 +157,10 @@
                             $("#edit").html(`
                             @component('utils.successModal',["code"=>"Order Taken"])
 
-                            @endcomponent
-                            `)
-                            location.reload();
+                                    @endcomponent
+                                `)
+                            // location.reload();
+                            window.location('web/order')
                         } else if(data.code == -1){
                             var errs = $.map(data.errs, function(value, index) {
                                 return [value];
@@ -103,14 +170,14 @@
                             $("#edit").html(`
                                 @component('utils.errorsModal',["code"=>"-1"])
 
-                                @endcomponent
-                            `);
+                                    @endcomponent
+                                `);
                             errs.forEach(element => {
                                 $("#errors").append(`
                                     @component('utils.errorsModalArray', ["code"=>"errorsArray"])
 
-                                    @endcomponent
-                                `);
+                                        @endcomponent
+                                    `);
                             });
                         }else {
                             $("#edit").html(`<div class="text-center"> <h3>Error Updating...</h3> <p>Bye</p></div>`);
@@ -121,11 +188,11 @@
                     error: function (err) {
                         console.log(err);
                         alert("Fatal Error Occurred");
-                        }
+                    }
                 })
             });
-         //.take-order
-    });
+            //.take-order
+        });
 
     </script>
 @endsection

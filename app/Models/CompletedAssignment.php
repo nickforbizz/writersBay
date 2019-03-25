@@ -6,26 +6,28 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property int $id
- * @property int $user_id
- * @property string $title
- * @property string $category
- * @property string $description
- * @property string $instuctions
- * @property int $pages
- * @property string $images_link
- * @property string $assignment_body
+ * @property int $pending_pay_id
+ * @property int $remember_token
+ * @property int $active
  * @property int $status
- * @property string $updated_at
  * @property string $created_at
+ * @property string $updated_at
  * @property string $deleted_at
- * @property User $user
+ * @property AssgPendingPayment $assgPendingPayment
  */
-class CompletedAssignment extends Model
+class Completedassignment extends Model
 {
+    /**
+     * The table associated with the model.
+     * 
+     * @var string
+     */
+    protected $table = 'completedassignment';
+
     /**
      * @var array
      */
-    protected $fillable = ['user_id', 'title', 'category', 'description', 'instuctions', 'pages', 'images_link', 'assignment_body', 'status', 'updated_at', 'created_at', 'deleted_at'];
+    protected $fillable = ['pending_pay_id', 'remember_token', 'active', 'status', 'created_at', 'updated_at', 'deleted_at'];
 
     /**
      * The connection name for the model.
@@ -37,8 +39,8 @@ class CompletedAssignment extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user()
+    public function assgPendingPayment()
     {
-        return $this->belongsTo('App\Models\User');
+        return $this->belongsTo('App\Models\AssgPendingPayment', 'pending_pay_id');
     }
 }

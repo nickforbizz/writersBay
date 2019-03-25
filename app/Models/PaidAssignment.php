@@ -6,23 +6,31 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property int $id
- * @property int $assignment_id
+ * @property int $assg_id
  * @property int $user_id
- * @property string $message
- * @property int $paid
+ * @property int $remember_token
+ * @property int $amount_paid
+ * @property int $active
  * @property int $status
- * @property string $updated_at
  * @property string $created_at
+ * @property string $updated_at
  * @property string $deleted_at
  * @property Assignment $assignment
  * @property User $user
  */
-class PaidAssignment extends Model
+class Paidassignment extends Model
 {
+    /**
+     * The table associated with the model.
+     * 
+     * @var string
+     */
+    protected $table = 'paidassignment';
+
     /**
      * @var array
      */
-    protected $fillable = ['assignment_id', 'user_id', 'message', 'paid', 'status', 'updated_at', 'created_at', 'deleted_at'];
+    protected $fillable = ['assg_id', 'user_id', 'remember_token', 'amount_paid', 'active', 'status', 'created_at', 'updated_at', 'deleted_at'];
 
     /**
      * The connection name for the model.
@@ -36,7 +44,7 @@ class PaidAssignment extends Model
      */
     public function assignment()
     {
-        return $this->belongsTo('App\Models\Assignment');
+        return $this->belongsTo('App\Models\Assignment', 'assg_id');
     }
 
     /**

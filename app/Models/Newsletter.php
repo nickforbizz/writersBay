@@ -6,15 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property int $id
- * @property int $posted_by
- * @property string $category
  * @property string $title
  * @property string $body
+ * @property int $remember_token
  * @property int $status
- * @property string $updated_at
  * @property string $created_at
+ * @property string $updated_at
  * @property string $deleted_at
- * @property User $user
  */
 class Newsletter extends Model
 {
@@ -28,7 +26,7 @@ class Newsletter extends Model
     /**
      * @var array
      */
-    protected $fillable = ['posted_by', 'category', 'title', 'body', 'status', 'updated_at', 'created_at', 'deleted_at'];
+    protected $fillable = ['title', 'body', 'remember_token', 'status', 'created_at', 'updated_at', 'deleted_at'];
 
     /**
      * The connection name for the model.
@@ -37,11 +35,4 @@ class Newsletter extends Model
      */
     protected $connection = 'mysql';
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function user()
-    {
-        return $this->belongsTo('App\Models\User', 'posted_by');
-    }
 }

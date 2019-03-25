@@ -6,28 +6,28 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property int $id
- * @property int $user_id
+ * @property string $email
  * @property string $title
- * @property string $feedback
+ * @property string $message
+ * @property int $remember_token
  * @property int $status
- * @property string $updated_at
  * @property string $created_at
+ * @property string $updated_at
  * @property string $deleted_at
- * @property User $user
  */
-class AnonymousFeedback extends Model
+class Anonymousfeedback extends Model
 {
     /**
      * The table associated with the model.
      * 
      * @var string
      */
-    protected $table = 'anonymous_feedback';
+    protected $table = 'anonymousfeedback';
 
     /**
      * @var array
      */
-    protected $fillable = ['user_id', 'title', 'feedback', 'status', 'updated_at', 'created_at', 'deleted_at'];
+    protected $fillable = ['email', 'title', 'message', 'remember_token', 'status', 'created_at', 'updated_at', 'deleted_at'];
 
     /**
      * The connection name for the model.
@@ -36,11 +36,4 @@ class AnonymousFeedback extends Model
      */
     protected $connection = 'mysql';
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function user()
-    {
-        return $this->belongsTo('App\Models\User');
-    }
 }

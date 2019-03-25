@@ -17,70 +17,82 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <link href="{{ asset('assets/bootstrap4/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/appjk.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/writersBay/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/writersBay/Home/home.css') }}" rel="stylesheet">
+    @yield('top-styles')
 </head>
-<body>
-    <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
+<body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="60">
+    <div id="appr">
+
+        <nav class="navbar navbar-default navbar-fixed-top">
             <div class="container">
+                <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'WritersBay') }}
                 </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+                </div>
+                <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#about">ABOUT</a></li>
+                    <li><a href="#services">SERVICES</a></li>
+                    <li><a href="#portfolio">PORTFOLIO</a></li>
+                    <li><a href="#pricing">PRICING</a></li>
+                    <li><a href="#contact">CONTACT</a></li>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav mr-auto">
+                    <!-- Authentication Links -->
+                    @guest
+                        <li class="nav-item">
+                            @if (Route::has('login'))
+                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                            @endif
+                        </li>
+                        <li class="nav-item">
+                            @if (Route::has('register'))
+                            <a class="nav-link" href=" {{ route('register') }}">{{ __('Register') }}</a>
+                            @endif
+                        </li>
+                    @else
+                        <li class="nav-item dropdown">
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                 <span class="caret"></span>
+                            </a>
 
-                    </ul>
-
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ml-auto">
-                        <!-- Authentication Links -->
-                        @guest
-                            <li class="nav-item">
-                                @if (Route::has('Web.register'))
-                                    <a class="nav-link" href="{{ route('Web.login') }}">{{ __('Login') }}</a>
-                                @endif
-                            </li>
-                            <li class="nav-item">
-                                @if (Route::has('Web.register'))
-                                    <a class="nav-link" href=" url('/register')">{{ __('Register') }}</a>
-                                @endif
-                            </li>
-                        @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }} <span class="caret"></span>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown" style="    height: 50px;
+    background-color: #d66b6b;
+    text-align: -webkit-center;">
+                                <a class="dropdown-item" href="{{ route('Web.logout') }}"
+                                    onclivck="event.preventDefault();
+                                                    document.getElementById('logout-form').submit();">
+                                    {{ __('Logout') }}
                                 </a>
 
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
+                                <form id="logout-form" action="{{ route('Web.logout') }}" method="POST" style="display: none;">
+                                    @csrf
+                                </form>
+                            </div>
+                        </li>
+                    @endguest
+                </ul>
 
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                        @csrf
-                                    </form>
-                                </div>
-                            </li>
-                        @endguest
-                    </ul>
                 </div>
             </div>
         </nav>
+
 
         <main class="py-4">
             @yield('content')
         </main>
     </div>
     <script src="{{ asset('assets/bootstrap4/jquery.1.11.1.js') }}"></script>
-    <script src="{{ asset('assets/bootstrap4/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('assets/writersBay/js/bootstrap.min.js') }}"></script>
     @yield('bottom-scripts')
 </body>
 </html>
+<!--this website was made by Wainaina Nicholas Waruingi of Mombex Ent contact him through +254707722247 or email nickforbiz@gmail.com <a href="mombexent.com">Mombexent.com </a> -->
+<!--this website was made by Wainaina Nicholas Waruingi of Mombex Ent contact him through +254707722247 or email nickforbiz@gmail.com-->

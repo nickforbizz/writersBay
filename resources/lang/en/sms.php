@@ -13,7 +13,6 @@ return [
     |
     */
 
-    'previous' => '&laquo; Previous',
-    'next' => 'Next &raquo;',
+    'registered_writer' => 'Halloo :name Welcome to Writers Club',
 
 ];

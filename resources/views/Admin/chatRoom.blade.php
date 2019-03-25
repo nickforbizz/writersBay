@@ -9,370 +9,142 @@
                     <li><a href="{{ route('Admin.home') }}">
                         <em class="fa fa-home"></em>
                     </a></li>
-                    <li class="active">Dashboard/Roles</li>
+                    <li class="active">Dashboard/ChatRoom</li>
                 </ol>
             </div>
             <!--/.row-->
             <div class="row" style="margin-top:20px">
+
+
                 <div class="col-md-12">
-                    <div class="panel panel-default">
+                    <div class="panel panel-default chat">
                         <div class="panel-heading">
-                            Add Roles
-                            <div class="pull-right">
-                                    <h4 class="panel-title">
-                                        <a data-toggle="collapse" href="#collapjserole"><em class="fa fa-toggle-up"></em></a>
-                                    </h4>
-                            </div>
-                        </div>
-                        <!-- /.panel-heading -->
-                        <div id="collapserole" class="panel-collapse collapse show">
-                            <div class="panel-body">
-                                <form id="addRole">
+                             Chat With This Writer
+                            <ul class="pull-right panel-settings panel-button-tab-right">
+                                <li class="dropdown"><a class="pull-right dropdown-toggle" data-toggle="dropdown" href="#">
+                                        <em class="fa fa-user"></em>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-right">
+                                        <li>
 
-                                    <div class="form-group col-md-12">
-                                        <label for="name">Name:</label>
-                                        <input type="text" name="name" class="form-control" placeholder="Enter Name"  id="name" required>
-                                    </div>
-
-                                    <div class="form-group col-md-12">
-                                        <label for="description">description:</label>
-                                        <textarea name="description"  class="form-control"  id="description" cols="20" rows="5" placeholder="Type Description" required></textarea>
-                                    </div>
-
-                                    {{csrf_field() }}
-
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="pull-right" style="margin-right:30px;">
-                                                <input type="submit" class="btn btn-sm btn-success">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <hr>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row" style="margin-top:30px">
-                <div class="col-md-12">
-                    <!-- Tables  -->
-                    <div class="panel panel-default">
-
-                        <div class="panel-heading">
-                            Edit Roles
-                        </div>
-                        @if (Auth::guard('admin')->user()->role->name == 'superadmin')
-                        <!-- /.panel-heading -->
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em></span></div>
                         <div class="panel-body">
-                            <div class="dataTable_wrapper">
-                                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
-                                    <thead>
-                                        <tr>
-                                            <th>#id</th>
-                                            <th>name</th>
-                                            <th>Description</th>
-                                            <th>created_at</th>
-                                            <th>updated_at</th>
-                                            <th>Edit</th>
-                                            <th>Del</th>
 
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (App\Models\Role::where('status', 1)->get() as $role)
-                                        <tr class="tb_data" >
-                                            <td> {{ $role->id }}</td>
-                                            <td> {{ $role->name }} </td>
-                                            <td> {{ $role->description }} </td>
-                                            <td> {{ ($role->created_at->diffForHumans()) }} </td>
-                                            <td> {{ ($role->updated_at->diffForHumans()) }} </td>
-                                            <td> <button class="btn btn-info btn-sm edit-role" data-id=' {{ $role->id }}'>Edit</button> </td>
-                                            <td>
-                                                <button class="btn btn-danger btn-sm del-role" data-id=' {{ $role->id }}'>Del</button>
-                                            </td>
-                                        </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                            <!-- /.table-responsive -->
+                            @foreach(\App\Models\Chat::where('status', 1)->get() as $chat)
+                                @if(\App\Models\ChatsAdmin::where('chat_id', $chat->id)->where('user_id',$id)->first())
 
+                                    <ul>
+                                        <li class="left clearfix"><span class="chat-img pull-right">
+                                            <img src="{{ asset('assets/writersBay/img/3d_graffiti_background_i-wallpaper-2560x1600.jpg') }}" alt="User Avatar" height="40px" width="40px" class="img-circle" />
+                                            </span>
+
+                                            <div class="chat-body clearfix">
+                                                <div class="header">
+                                                    <strong class="primary-font"> {{ \App\Models\ChatsAdmin::where('chat_id', $chat->id)->first()->admin->username }}
+                                                    </strong>
+                                                    <small class="text-muted"> {{ \App\Models\ChatsAdmin::where('chat_id', $chat->id)->first()->updated_at->diffForHumans() }}</small>
+                                                </div>
+                                                <p> {{ $chat->body}} </p>
+                                            </div>
+
+                                        </li>
+                                    </ul>
+                                @elseif(\App\Models\ChatsUser::where('chat_id', $chat->id)->where('user_id', $id)->first())
+
+                                    <ul>
+                                        <li class="left clearfix"><span class="chat-img pull-left">
+                                            <img src="{{ asset('assets/writersBay/img/3d_graffiti_background_i-wallpaper-2560x1600.jpg') }}" alt="User Avatar" height="40px" width="40px" class="img-circle" />
+                                            </span>
+
+                                            <div class="chat-body clearfix">
+                                                <div class="header">
+                                                    <strong class="primary-font"> {{ \App\Models\ChatsUser::where('chat_id', $chat->id)->first()->user->username }}
+                                                    </strong>
+                                                    <small class="text-muted"> {{ \App\Models\ChatsUser::where('chat_id', $chat->id)->first()->updated_at->diffForHumans() }}</small>
+                                                </div>
+                                                <p> {{ $chat->body}} </p>
+                                            </div>
+
+                                        </li>
+                                    </ul>
+                                @endif
+                            @endforeach
                         </div>
-                        <!-- /.panel-body -->
+                        <div class="panel-footer">
+                            <form id="AdminChart">
+                                <div class="input-group">
+                                    <input id="btn-input" type="text" name="chat" class="form-control input-md" placeholder="Type your message here..." /><span class="input-group-btn">
+                                        <button class="btn btn-primary btn-md" id="btn-chat">Send</button>
+                                </span></div>
 
-                        @else
-                            <div class="panel-body">
-
-                                <div class="crdj">
-                                    <div class="alert alert-waning">
-                                        <strong> <h2>Sorry!</h2> </strong>
-                                            <p class="lead">Only Users with privillages <i>like <b>SuperAdmin</b> </i> can edit Users </p>
-                                    </div>
-                                </div>
-                            </div>
-                        @endif
+                            </form>
+                        </div>
                     </div>
-                    <!-- /.panel -->
-                    <!-- Tables-->
-                </div>
-            </div>
-            @component('utils.modal_wrapper', ["title"=>" Roles"])
+
+            @component('utils.modal_wrapper', ["title"=>" Charts"])
 
             @endcomponent
 
     </div>
 
 @endsection
-
 @section('bottom-scripts')
-<script>
-        $(document).ready(function(){
-            // get update
-            $(document).on("click",".edit-role", function () {
-                var role_id = $(this).attr("data-id");
-                $.ajax({
-                    url:'/admin/getRole/' + role_id,
-                    method: 'get',
-                    success: function (data) {
-                        // data = JSON.parse(data);
-                        console.log(data.data.description);
+<script !src="">
+    $("#AdminChart").on("click", function (event) {
+        event.preventDefault();
+        $.ajax({
+            url:"{{route('Admin.AdminMsg')}}",
+            method: 'post',
+            data: $("#AdminChart").serializeArray(),
+            success: function (data) {
+                $("#submit_btn").show();
 
+                console.log(data);
 
-                        $("#edit").html('');
-
-                        if (data.code == 1) {
-                            $("#edit").html(`
-                            @component('utils.editModal',["code"=>"edit_category"])
+                if (data.code == 1) {
+                    $("#edit").html(`
+            @component('utils.successModal',["code"=>"user_edited"])
 
                             @endcomponent
-                            `)
-                            $("#submit_btn").hide();
-                        }else {
-                            $("#edit").html(`<div class="text-center"> <h3>Error Updating...</h3> <p>Bye</p></div>`);
-                            $("#submit_btn").hide();
-                        }
-                        $("#myModal").modal();
-                    },
-                    error: function (err) {console.log(err);}
-                })
-            });
-            // Update
-            $("#update").on("submit", function (event) {
-                event.preventDefault();
-                $.ajax({
-                    url:"{{url('/admin/editRole')}}",
-                    method: 'post',
-                    data: $("#update").serializeArray(),
-                    success: function (data) {
-                        $("#submit_btn").show();
-
-                        console.log(data);
-
-                        if (data.code == 1) {
-                            $("#edit").html(`
-                            @component('utils.successModal',["code"=>"user_edited"])
+                        `);
+                    let att = $("#order").val();
+                    location.reload();
+                    $("#myModal").modal("hide");
+                } else if(data.code == -1){
+                    var errs = $.map(data.errs, function(value, index) {
+                        return [value];
+                    });
+                    $("#edit").html(`
+            @component('utils.errorsModal',["code"=>"-1"])
 
                             @endcomponent
-                            `)
-                            $("#submit_btn").hide();
-                        } else if(data.code == -1){
-                            var errs = $.map(data.errs, function(value, index) {
-                                return [value];
-                            });
-                            $("#edit").html(`
-                                @component('utils.errorsModal',["code"=>"-1"])
+                        `);
+                    errs.forEach(element => {
+                        $("#errors").append(`
+                @component('utils.errorsModalArray', ["code"=>"errorsArray"])
 
                                 @endcomponent
                             `);
-                            errs.forEach(element => {
-                                $("#errors").append(`
-                                    @component('utils.errorsModalArray', ["code"=>"errorsArray"])
-
-                                    @endcomponent
-                                `);
-                            });
-                        } else {
-                            $("#edit").html(`<div class="text-center"> <h3>Error Updating...</h3> <p>Bye</p></div>`);
-                            $("#submit_btn").hide();
-                        }
-                        $("#myModal").modal();
-                    },error: function (data) {
-                        $("#edit").html(`<div class="text-center"> <h3>ERROR Updating...</h3> <p>Bye</p></div>`);
-                        $("#submit_btn").hide();
-                        console.log(data);
-
-                    }
-                })
-            });
-
-            // add role
-            $("#addRole").on("submit", function (event) {
-                event.preventDefault();
-                $.ajax({
-                    url:"{{url('/admin/addRole')}}",
-                    method: 'post',
-                    data: $("#addRole").serializeArray(),
-                    success: function (data) {
-                        $("#submit_btn").show();
-
-                        console.log(data);
-
-                        if (data.code == 1) {
-                            $("#edit").html(`
-                            @component('utils.successModal',["code"=>"role_added"])
-
-                            @endcomponent
-                            `)
-                            $("#submit_btn").hide();
-                        } else if(data.code == -1){
-                            var errs = $.map(data.errs, function(value, index) {
-                                return [value];
-                            });
-                            $("#edit").html(`
-                                @component('utils.errorsModal',["code"=>"-1"])
-
-                                @endcomponent
-                            `);
-                            errs.forEach(element => {
-                                $("#errors").append(`
-                                    @component('utils.errorsModalArray', ["code"=>"errorsArray"])
-
-                                    @endcomponent
-                                `);
-                            });
-                        } else {
-                            $("#edit").html(`<div class="text-center"> <h3>Error Updating...</h3> <p>Bye</p></div>`);
-                            $("#submit_btn").hide();
-                        }
-                        $("#myModal").modal();
-                    },error: function (data) {
-                        $("#edit").html(`<div class="text-center"> <h3>ERROR Updating...</h3> <p>Bye</p></div>`);
-                        $("#submit_btn").hide();
-                        console.log(data);
-
-                    }
-                })
-            });
-
-            //del role
-            $(document).on("click", ".del-role", function () {
-                id = $(this).attr("data-id");
-                viewVerify(id);
-            })
-
-        });
-
-        function callServer(formId, url) {
-            $("#"+formId).on("submit", function (event) {
-                event.preventDefault();
-                $.ajax({
-                    url:"{{url('/"+ url +"')}}",
-                    method: 'post',
-                    data: $("#"+formId).serializeArray(),
-                    success: function (data) {
-                        $("#submit_btn").show();
-
-                        console.log(data);
-
-                        if (data.code == 1) {
-                            $("#edit").html(`
-                            @component('utils.successModal',["code"=>"role_added"])
-
-                            @endcomponent
-                            `)
-                            $("#submit_btn").hide();
-                        } else if(data.code == -1){
-                            var errs = $.map(data.errs, function(value, index) {
-                                return [value];
-                            });
-                            $("#edit").html(`
-                                @component('utils.errorsModal',["code"=>"-1"])
-
-                                @endcomponent
-                            `);
-                            errs.forEach(element => {
-                                $("#errors").append(`
-                                    @component('utils.errorsModalArray', ["code"=>"errorsArray"])
-
-                                    @endcomponent
-                                `);
-                            });
-                        } else {
-                            $("#edit").html(`<div class="text-center"> <h3>Error Updating...</h3> <p>Bye</p></div>`);
-                            $("#submit_btn").hide();
-                        }
-                        $("#myModal").modal();
-                    },error: function (data) {
-                        $("#edit").html(`<div class="text-center"> <h3>ERROR Updating...</h3> <p>Bye</p></div>`);
-                        $("#submit_btn").hide();
-                        console.log(data);
-
-                    }
-                })
-            });
-        }
-
-        function getData(url, id, type="") {
-            $.ajax({
-                url:'/'+url+'/' + id,
-                method: 'get',
-                success: function (data) {
-                    // data = JSON.parse(data);
-                    console.log(data);
-                        $("#edit").html('');
-                    if (type == "delRole") {
-                        if (data.code == 1) {
-                            $("#edit").html(`
-                            @component('utils.successModal',["code"=>"edit_role"])
-
-                            @endcomponent
-                            `)
-                            $("#submit_btn").hide();
-                        }
-                    }else{
-
-                        if (data.code == 1) {
-                            $("#edit").html(`
-                            @component('utils.editModal',["code"=>"edit_role"])
-
-                            @endcomponent
-                            `)
-                            $("#submit_btn").hide();
-                        }else {
-                            $("#edit").html(`<div class="text-center"> <h3>Error Updating...</h3> <p>Bye</p></div>`);
-                            $("#submit_btn").hide();
-                        }
-                    }
-
-                    $("#myModal").modal();
-                },
-                error: function (err) {console.log(err);}
-            });
-        }
-
-        function verify(verify, id) {
-            console.log(verify+'/'+id);
-
-            if (verify == 0) {
-                getData("admin/delRole", id,  "delRole");
-            } else {
-                $("#edit").html(`
-                <p class="lead">Role not deleted</p>
-                `)
-            }
+                    });
+                } else {
+                    $("#edit").html(`<div class="text-center"> <h3>Error Updating...</h3> <p>Bye</p></div>`);
+                    $("#submit_btn").hide();
+                }
                 $("#myModal").modal();
-        }
-        function viewVerify(id){
-            $("#edit").html(`
-            @component('utils.VerifyModal',["code"=>"role_added"])
-            @endcomponent
-            `)
-            $("#myModal").modal();
+            },error: function (data) {
+                $("#edit").html(`<div class="text-center"> <h3>ERROR Updating...</h3> <p>Bye</p></div>`);
+                $("#submit_btn").hide();
+                console.log(data);
 
-        }
-    </script>
+            }
+        });
+    })
 
+</script>
 @endsection
+{{--this website was made by Wainaina Nicholas Waruingi of Mombex Ent contact him through +254707722247 or email nickforbiz@gmail.com--}}
+<!--this website was made by Wainaina Nicholas Waruingi of Mombex Ent contact him through +254707722247 or email nickforbiz@gmail.com-->

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Helpers\SmsHelper;
 use App\User;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -46,6 +48,24 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
+
+    /**
+     * The user has been registered.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\User  $user
+     * @return mixed
+     */
+    protected function registered(Request $request, $user)
+    {
+//        SmsHelper::init($user)->sendSms("Hallooo there");
+        SmsHelper::init($user)->sendSms(trans_choice("sms.registered_writer",[
+            "name"=>$user->fname,
+
+        ]));
+    }
+
+
     protected function validator(array $data)
     {
         return Validator::make($data, [

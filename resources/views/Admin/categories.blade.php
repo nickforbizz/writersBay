@@ -9,7 +9,7 @@
                     <li><a href="{{ route('Admin.home') }}">
                         <em class="fa fa-home"></em>
                     </a></li>
-                    <li class="active">Dashboard/Roles</li>
+                    <li class="active">Dashboard/Category</li>
                 </ol>
             </div>
             <!--/.row-->
@@ -17,7 +17,7 @@
                 <div class="col-md-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            Add Roles
+                            Add Category
                             <div class="pull-right">
                                     <h4 class="panel-title">
                                         <a data-toggle="collapse" href="#collapjserole"><em class="fa fa-toggle-up"></em></a>
@@ -27,7 +27,7 @@
                         <!-- /.panel-heading -->
                         <div id="collapserole" class="panel-collapse collapse show">
                             <div class="panel-body">
-                                <form id="addRole">
+                                <form id="addCategory">
 
                                     <div class="form-group col-md-12">
                                         <label for="name">Name:</label>
@@ -62,7 +62,7 @@
                     <div class="panel panel-default">
 
                         <div class="panel-heading">
-                            Edit Roles
+                            Edit Categories
                         </div>
                         @if (Auth::guard('admin')->user()->role->name == 'superadmin')
                         <!-- /.panel-heading -->
@@ -82,16 +82,16 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach (App\Models\Role::where('status', 1)->get() as $role)
-                                        <tr class="tb_data" >
-                                            <td> {{ $role->id }}</td>
-                                            <td> {{ $role->name }} </td>
-                                            <td> {{ $role->description }} </td>
-                                            <td> {{ ($role->created_at->diffForHumans()) }} </td>
-                                            <td> {{ ($role->updated_at->diffForHumans()) }} </td>
-                                            <td> <button class="btn btn-info btn-sm edit-role" data-id=' {{ $role->id }}'>Edit</button> </td>
+                                        @foreach (App\Models\Category::where('status', 1)->get() as $category)
+                                        <tr class="tb_data" id="del{{ $category->id }}">
+                                            <td> {{ $category->id }}</td>
+                                            <td> {{ $category->name }} </td>
+                                            <td> {{ $category->description }} </td>
+                                            <td> {{ ($category->created_at->diffForHumans()) }} </td>
+                                            <td> {{ ($category->updated_at->diffForHumans()) }} </td>
+                                            <td> <button class="btn btn-info btn-sm edit-category" data-id=' {{ $category->id }}'>Edit</button> </td>
                                             <td>
-                                                <button class="btn btn-danger btn-sm del-role" data-id=' {{ $role->id }}'>Del</button>
+                                                <button class="btn btn-danger btn-sm del-category" data-id=' {{ $category->id }}'>Del</button>
                                             </td>
                                         </tr>
                                         @endforeach
@@ -109,7 +109,7 @@
                                 <div class="crdj">
                                     <div class="alert alert-waning">
                                         <strong> <h2>Sorry!</h2> </strong>
-                                            <p class="lead">Only Users with privillages <i>like <b>SuperAdmin</b> </i> can edit Users </p>
+                                            <p class="lead">Only Users with privillages <i>like <b>SuperAdmin</b> </i> can edit categories </p>
                                     </div>
                                 </div>
                             </div>
@@ -119,9 +119,7 @@
                     <!-- Tables-->
                 </div>
             </div>
-            @component('utils.modal_wrapper', ["title"=>" Roles"])
 
-            @endcomponent
 
     </div>
 
@@ -131,21 +129,22 @@
 <script>
         $(document).ready(function(){
             // get update
-            $(document).on("click",".edit-role", function () {
-                var role_id = $(this).attr("data-id");
+            $(document).on("click",".edit-category", function () {
+                var cat_id = $(this).attr("data-id");
+                console.log(cat_id);
                 $.ajax({
-                    url:'/admin/getRole/' + role_id,
+                    url:'/admin/getCategories/' + cat_id,
                     method: 'get',
                     success: function (data) {
                         // data = JSON.parse(data);
-                        console.log(data.data.description);
+                        console.log(data);
 
 
                         $("#edit").html('');
 
                         if (data.code == 1) {
                             $("#edit").html(`
-                            @component('utils.editModal',["code"=>"edit_role"])
+                            @component('utils.editModal',["code"=>"edit_category"])
 
                             @endcomponent
                             `)
@@ -163,7 +162,7 @@
             $("#update").on("submit", function (event) {
                 event.preventDefault();
                 $.ajax({
-                    url:"{{url('/admin/editRole')}}",
+                    url:"{{url('/admin/editCategories')}}",
                     method: 'post',
                     data: $("#update").serializeArray(),
                     success: function (data) {
@@ -208,13 +207,13 @@
                 })
             });
 
-            // add role
-            $("#addRole").on("submit", function (event) {
+            // add category
+            $("#addCategory").on("submit", function (event) {
                 event.preventDefault();
                 $.ajax({
-                    url:"{{url('/admin/addRole')}}",
+                    url:"{{url('/admin/addCategories')}}",
                     method: 'post',
-                    data: $("#addRole").serializeArray(),
+                    data: $("#addCategory").serializeArray(),
                     success: function (data) {
                         $("#submit_btn").show();
 
@@ -225,8 +224,8 @@
                             @component('utils.successModal',["code"=>"role_added"])
 
                             @endcomponent
-                            `)
-                            $("#submit_btn").hide();
+                            `);
+                            $("#addCategory")[0].reset();
                         } else if(data.code == -1){
                             var errs = $.map(data.errs, function(value, index) {
                                 return [value];
@@ -258,10 +257,10 @@
             });
 
             //del role
-            $(document).on("click", ".del-role", function () {
+            $(document).on("click", ".del-category", function () {
                 id = $(this).attr("data-id");
                 viewVerify(id);
-            })
+            });
 
         });
 
@@ -323,14 +322,14 @@
                     // data = JSON.parse(data);
                     console.log(data);
                         $("#edit").html('');
-                    if (type == "delRole") {
+                    if (type === "delCategories") {
                         if (data.code == 1) {
                             $("#edit").html(`
                             @component('utils.successModal',["code"=>"edit_role"])
 
                             @endcomponent
                             `)
-                            $("#submit_btn").hide();
+                            $("#del"+id).hide();
                         }
                     }else{
 
@@ -357,10 +356,10 @@
             console.log(verify+'/'+id);
 
             if (verify == 0) {
-                getData("admin/delRole", id,  "delRole");
+                getData("admin/delCategories", id,  "delCategories");
             } else {
                 $("#edit").html(`
-                <p class="lead">Role not deleted</p>
+                <p class="lead">Record not deleted</p>
                 `)
             }
                 $("#myModal").modal();
@@ -369,10 +368,11 @@
             $("#edit").html(`
             @component('utils.VerifyModal',["code"=>"role_added"])
             @endcomponent
-            `)
+            `);
             $("#myModal").modal();
 
         }
+
     </script>
 
 @endsection

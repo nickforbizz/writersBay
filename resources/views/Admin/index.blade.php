@@ -129,7 +129,8 @@
 				</a></li>
 				<li class="active">Dashboard</li>
 			</ol>
-		</div><!--/.row-->
+        </div>
+        <!--/.row-->
 
 		<div class="row">
 			<div class="col-lg-12">

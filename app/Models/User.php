@@ -2,46 +2,50 @@
 
 namespace App\Models;
 
+use Illuminate\Foundation\Auth\User as authenticatable;
 use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property int $id
  * @property int $national_id
- * @property string $username
  * @property string $email
  * @property string $password
+ * @property string $username
  * @property string $fname
  * @property string $lname
  * @property string $sname
- * @property string $gender
  * @property int $age
+ * @property string $gender
+ * @property string $email_verified_at
  * @property int $mobile
+ * @property string $roles
  * @property string $address
- * @property string $user_level
  * @property string $remember_token
+ * @property int $active
  * @property int $status
  * @property string $created_at
  * @property string $updated_at
  * @property string $deleted_at
- * @property AnonymousFeedback[] $anonymousFeedbacks
- * @property CompletedAssignment[] $completedAssignments
- * @property Newsletter[] $newsletters
- * @property OnprogressAssignment[] $onprogressAssignments
- * @property OnrevisionAssignment[] $onrevisionAssignments
- * @property PaidAssignment[] $paidAssignments
- * @property ReassignedAssignment[] $reassignedAssignments
+ * @property Assignment[] $assignments
+ * @property Completedassignment[] $completedassignments
+ * @property Onprogressassignment[] $onprogressassignments
+ * @property Onreviewassignment[] $onreviewassignments
+ * @property Onrevisionassignment[] $onrevisionassignments
+ * @property Paidassignment[] $paidassignments
+ * @property UserFeedback[] $userFeedbacks
  * @property UserRating[] $userRatings
+ * @property UserRole[] $userRoles
  */
-class User extends Model
+class User extends Authenticatable
 {
     /**
      * @var array
      */
-    protected $fillable = ['national_id', 'username', 'email', 'password', 'fname', 'lname', 'sname', 'gender', 'age', 'mobile', 'address', 'user_level', 'remember_token', 'status', 'created_at', 'updated_at', 'deleted_at'];
+    protected $fillable = ['national_id', 'email', 'password', 'username', 'fname', 'lname', 'sname', 'age', 'gender', 'email_verified_at', 'mobile', 'roles', 'address', 'remember_token', 'active', 'status', 'created_at', 'updated_at', 'deleted_at'];
 
     /**
      * The connection name for the model.
-     * 
+     *
      * @var string
      */
     protected $connection = 'mysql';
@@ -49,57 +53,57 @@ class User extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function anonymousFeedbacks()
+    public function assignments()
     {
-        return $this->hasMany('App\Models\AnonymousFeedback');
+        return $this->hasMany('App\Models\Assignment');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function completedAssignments()
+    public function completedassignments()
     {
-        return $this->hasMany('App\Models\CompletedAssignment');
+        return $this->hasMany('App\Models\Completedassignment');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function newsletters()
+    public function onprogressassignments()
     {
-        return $this->hasMany('App\Models\Newsletter', 'posted_by');
+        return $this->hasMany('App\Models\Onprogressassignment');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function onprogressAssignments()
+    public function onreviewassignments()
     {
-        return $this->hasMany('App\Models\OnprogressAssignment');
+        return $this->hasMany('App\Models\Onreviewassignment');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function onrevisionAssignments()
+    public function onrevisionassignments()
     {
-        return $this->hasMany('App\Models\OnrevisionAssignment');
+        return $this->hasMany('App\Models\Onrevisionassignment');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function paidAssignments()
+    public function paidassignments()
     {
-        return $this->hasMany('App\Models\PaidAssignment');
+        return $this->hasMany('App\Models\Paidassignment');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function reassignedAssignments()
+    public function userFeedbacks()
     {
-        return $this->hasMany('App\Models\ReassignedAssignment');
+        return $this->hasMany('App\Models\UserFeedback');
     }
 
     /**
@@ -108,5 +112,13 @@ class User extends Model
     public function userRatings()
     {
         return $this->hasMany('App\Models\UserRating');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function userRoles()
+    {
+        return $this->hasMany('App\Models\UserRole');
     }
 }

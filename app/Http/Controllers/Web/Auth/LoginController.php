@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Web\Auth;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\RedirectsUsers;
@@ -28,7 +29,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = 'admin';
+    protected $redirectTo = 'web/roleit';
 
     /**
      * Create a new controller instance.
@@ -40,17 +41,22 @@ class LoginController extends Controller
         // $this->middleware('guest')->except('logout');
     }
 
+    // public function login()
+    // {
+    //     return "login";
+    // }
     // customizing controller
     protected function guard()
     {
-      return Auth::guard('admin');
+      return Auth::guard('web');
     }
 
     public function showLoginForm()
     {
-        return view('web.auth.login');
+        return view('Web.auth.login');
     }
 
 
-
 }
+//{{--this website was made by Wainaina Nicholas Waruingi of Mombex Ent contact him through +254707722247 or email nickforbiz@gmail.com--}}
+//<!--this website was made by Wainaina Nicholas Waruingi of Mombex Ent contact him through +254707722247 or email nickforbiz@gmail.com-->

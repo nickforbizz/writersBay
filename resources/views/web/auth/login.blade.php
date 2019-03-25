@@ -1,14 +1,34 @@
-@extends('Admin.layouts.app')
+@extends('web.layoutsWeb.app')
+
+@section('top-styles')
+    <style>
+        #card-login{
+            background-color: #eee;
+            color: black !important;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        }.card-header{
+
+        }
+
+    </style>
+@endsection
 
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Login') }}</div>
+        <div class="col-md-8 col-md-offset-2" style="margin-top:100px" >
+            @if (session('status_ridirect'))
+                <div class="alert alert-warning alert-dismissible">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <strong>Warning!</strong>
+                    <p class="lead">{{ session('status_ridirect') }}</p>
+                </div>
+            @endif
+            <div class="jumbotron" id="card-login">
+                <div class="card-header"> <h3> {{ __('Login') }}</h3></div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('Web.loginUser') }}">
+                    <form method="POST" action="{{ route('loginUser') }}">
                         @csrf
 
                         <div class="form-group row">
@@ -69,3 +89,5 @@
     </div>
 </div>
 @endsection
+{{--this website was made by Wainaina Nicholas Waruingi of Mombex Ent contact him through +254707722247 or email nickforbiz@gmail.com--}}
+<!--this website was made by Wainaina Nicholas Waruingi of Mombex Ent contact him through +254707722247 or email nickforbiz@gmail.com-->

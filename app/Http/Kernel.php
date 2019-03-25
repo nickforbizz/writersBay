@@ -63,9 +63,12 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'webby' => \App\Http\Middleware\WebMiddleware::class,
         'calls' => \App\Http\Middleware\CallsMiddleware::class,
+
         'admin' => \App\Http\Middleware\AdminMiddleware::class,
         'admins' => \App\Http\Middleware\AuthenticateAdmins::class,
-        'theweb' => \App\Http\Middleware\RidirectIfAuthenticateAdmins::class,
+        'web1' => \App\Http\Middleware\RidirectIfAuthenticateAdmins::class,
+        'web' => \App\Http\Middleware\RedirectIfAuthenticateWriter::class
+        // 'check_user_role' => \App\Http\Middleware\CheckUserRole::class,
 
     ];
 

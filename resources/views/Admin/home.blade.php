@@ -2,32 +2,8 @@
 
 @section('content')
 
-
-    {{--  <!-- <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">Dashboard</div>
-
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-
-                    You are logged in!
-
-                    {{ Auth::guard('admin')->user() }} }}
-                </div>
-            </div>
-        </div>
-    </div> --> --}}
-
-    <!-- ________________________Lumino________________________________________________________ -->
-
-
-    <!-- body -sideNav and main -->
-
+        <!-- ________________________Lumino________________________________________________________ -->
+         <!-- body -sideNav and main -->
 
         <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
             <div class="row">
@@ -49,82 +25,69 @@
                 <div class="row">
                     <div class="col-xs-6 col-md-3 col-lg-3 no-padding">
                         <div class="panel panel-teal panel-widget border-right">
-                            <div class="row no-padding"><em class="fa fa-xl fa-shopping-cart color-blue"></em>
-                                <div class="large">120</div>
-                                <div class="text-muted">New Orders</div>
+                            <div class="row no-padding"><em class="fa fa-xl fa-paper-plane-o"></em>
+                                <div class="large">
+                                    {{ \App\Models\Assignment::where('status', 1)
+                                                                ->count()
+                                     }}
+                                </div>
+                                <div class="text-muted">Uploaded Assignments</div>
                             </div>
                         </div>
                     </div>
                     <div class="col-xs-6 col-md-3 col-lg-3 no-padding">
                         <div class="panel panel-blue panel-widget border-right">
-                            <div class="row no-padding"><em class="fa fa-xl fa-comments color-orange"></em>
-                                <div class="large">52</div>
-                                <div class="text-muted">Comments</div>
+                            <div class="row no-padding"><em class="fa fa-xl fa-clipboard color-orange"></em>
+                                <div class="large">
+                                    {{ \App\Models\Completedassignment::where('status', 1)
+                                                                ->where('active', 1)
+                                                                ->count()
+                                     }}
+                                </div>
+                                <div class="text-muted">Completed Assignments</div>
                             </div>
                         </div>
                     </div>
                     <div class="col-xs-6 col-md-3 col-lg-3 no-padding">
                         <div class="panel panel-orange panel-widget border-right">
-                            <div class="row no-padding"><em class="fa fa-xl fa-users color-teal"></em>
-                                <div class="large">24</div>
-                                <div class="text-muted">New Users</div>
+                            <div class="row no-padding"><em class="fa fa-xl fa-folder-open color-teal"></em>
+                                <div class="large">
+                                    {{ \App\Models\Onrevisionassignment::where('status', 1)
+                                                                ->where('active', 1)
+                                                                ->count()
+                                     }}
+                                </div>
+                                <div class="text-muted">Revised Assignments</div>
                             </div>
                         </div>
                     </div>
                     <div class="col-xs-6 col-md-3 col-lg-3 no-padding">
                         <div class="panel panel-red panel-widget ">
-                            <div class="row no-padding"><em class="fa fa-xl fa-search color-red"></em>
-                                <div class="large">25.2k</div>
-                                <div class="text-muted">Page Views</div>
+                            <div class="row no-padding"><em class="fa fa-xl fa-paypal color-red"></em>
+                                <div class="large">
+                                    {{ \App\Models\AssgPendingPayment::where('status', 1)
+                                                                ->where('active', 1)
+                                                                ->count()
+                                     }}
+                                </div>
+                                <div class="text-muted">Assignments Pending Payment</div>
                             </div>
                         </div>
                     </div>
                 </div><!--/.row-->
             </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            Site Traffic Overview
-                            <ul class="pull-right panel-settings panel-button-tab-right">
-                                <li class="dropdown"><a class="pull-right dropdown-toggle" data-toggle="dropdown" href="#">
-                                    <em class="fa fa-cogs"></em>
-                                </a>
-                                    <ul class="dropdown-menu dropdown-menu-right">
-                                        <li>
-                                            <ul class="dropdown-settings">
-                                                <li><a href="#">
-                                                    <em class="fa fa-cog"></em> Settings 1
-                                                </a></li>
-                                                <li class="divider"></li>
-                                                <li><a href="#">
-                                                    <em class="fa fa-cog"></em> Settings 2
-                                                </a></li>
-                                                <li class="divider"></li>
-                                                <li><a href="#">
-                                                    <em class="fa fa-cog"></em> Settings 3
-                                                </a></li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
-                            <span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em></span></div>
-                        <div class="panel-body">
-                            <div class="canvas-wrapper">
-                                <canvas class="main-chart" id="line-chart" height="200" width="600"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div><!--/.row-->
 
             <div class="row">
                 <div class="col-xs-6 col-md-3">
                     <div class="panel panel-default">
                         <div class="panel-body easypiechart-panel">
                             <h4>New Orders</h4>
-                            <div class="easypiechart" id="easypiechart-blue" data-percent="92" ><span class="percent">92%</span></div>
+                            <div class="easypiechart" id="easypiechart-blue" data-percent="92" ><span class="percent">
+                                    {{ \App\Models\Assignment::where('status', 1)
+                                                                ->where('active', 1)
+                                                                ->count()
+                                     }}
+                                </span></div>
                         </div>
                     </div>
                 </div>
@@ -139,8 +102,13 @@
                 <div class="col-xs-6 col-md-3">
                     <div class="panel panel-default">
                         <div class="panel-body easypiechart-panel">
-                            <h4>New Users</h4>
-                            <div class="easypiechart" id="easypiechart-teal" data-percent="56" ><span class="percent">56%</span></div>
+                            <h4>Writers</h4>
+                            <div class="easypiechart" id="easypiechart-teal" data-percent="56" ><span class="percent">
+                                    {{ \App\Models\User::where('status', 1)
+                                                                ->where('active', 1)
+                                                                ->count()
+                                     }}
+                                </span></div>
                         </div>
                     </div>
                 </div>
@@ -158,58 +126,30 @@
                 <div class="col-md-6">
                     <div class="panel panel-default chat">
                         <div class="panel-heading">
-                            Chat
+                            Click User Icon to select Chat
                             <ul class="pull-right panel-settings panel-button-tab-right">
                                 <li class="dropdown"><a class="pull-right dropdown-toggle" data-toggle="dropdown" href="#">
-                                    <em class="fa fa-cogs"></em>
+                                    <em class="fa fa-user"></em>
                                 </a>
                                     <ul class="dropdown-menu dropdown-menu-right">
                                         <li>
-                                            <ul class="dropdown-settings">
-                                                <li><a href="#">
-                                                    <em class="fa fa-cog"></em> Settings 1
-                                                </a></li>
-                                                <li class="divider"></li>
-                                                <li><a href="#">
-                                                    <em class="fa fa-cog"></em> Settings 2
-                                                </a></li>
-                                                <li class="divider"></li>
-                                                <li><a href="#">
-                                                    <em class="fa fa-cog"></em> Settings 3
-                                                </a></li>
-                                            </ul>
+
                                         </li>
                                     </ul>
                                 </li>
                             </ul>
                             <span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em></span></div>
                         <div class="panel-body">
-                            <ul>
-                                <li class="left clearfix"><span class="chat-img pull-left">
-                                    <img src="http://placehold.it/60/30a5ff/fff" alt="User Avatar" class="img-circle" />
-                                    </span>
-                                    <div class="chat-body clearfix">
-                                        <div class="header"><strong class="primary-font">John Doe</strong> <small class="text-muted">32 mins ago</small></div>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla ante turpis, rutrum ut ullamcorper sed, dapibus ac nunc.</p>
-                                    </div>
-                                </li>
-                                <li class="right clearfix"><span class="chat-img pull-right">
-                                    <img src="http://placehold.it/60/dde0e6/5f6468" alt="User Avatar" class="img-circle" />
-                                    </span>
-                                    <div class="chat-body clearfix">
-                                        <div class="header"><strong class="pull-left primary-font">Jane Doe</strong> <small class="text-muted">6 mins ago</small></div>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla ante turpis, rutrum ut ullamcorper sed, dapibus ac nunc.</p>
-                                    </div>
-                                </li>
-                                <li class="left clearfix"><span class="chat-img pull-left">
-                                    <img src="http://placehold.it/60/30a5ff/fff" alt="User Avatar" class="img-circle" />
-                                    </span>
-                                    <div class="chat-body clearfix">
-                                        <div class="header"><strong class="primary-font">John Doe</strong> <small class="text-muted">32 mins ago</small></div>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla ante turpis, rutrum ut ullamcorper sed, dapibus ac nunc.</p>
-                                    </div>
-                                </li>
+                            <ul class="dropdown-settings">
+                                @foreach(\App\Models\User::where('status', 1)->get() as $w)
+                                    <li><a href="{{ route('Admin.webMsg', ['id'=>$w->id]) }}">
+                                           <b>Chat With</b> <em class="fa fa-user"></em> {{ $w->username }}
+                                        </a></li>
+                                    <li class="divider"></li>
+                                @endforeach
+
                             </ul>
+
                         </div>
                         <div class="panel-footer">
                             <div class="input-group">
@@ -220,7 +160,7 @@
                     </div>
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            To-do List
+                            Send Writers Alerts
                             <ul class="pull-right panel-settings panel-button-tab-right">
                                 <li class="dropdown"><a class="pull-right dropdown-toggle" data-toggle="dropdown" href="#">
                                     <em class="fa fa-cogs"></em>
@@ -305,7 +245,7 @@
                         </div>
                         <div class="panel-footer">
                             <div class="input-group">
-                                <input id="btn-input" type="text" class="form-control input-md" placeholder="Add new task" /><span class="input-group-btn">
+                                <input id="btn-input" type="text" class="form-control input-md" placeholder="Add new Alert" /><span class="input-group-btn">
                                     <button class="btn btn-primary btn-md" id="btn-todo">Add</button>
                             </span></div>
                         </div>
@@ -392,7 +332,7 @@
                     </div>
                 </div><!--/.col-->
                 <div class="col-sm-12">
-                    <p class="back-link">Lumino Theme by <a href="https://www.medialoot.com">Medialoot</a></p>
+                    <p class="back-link">WritersBay<a href="https://www.medialoot.com">@mombex</a></p>
                 </div>
             </div><!--/.row-->
         </div>
