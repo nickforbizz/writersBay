@@ -11,8 +11,83 @@
 |
 */
 Route::get('/', function () {
-    return view('web.root');
+    return view('index');
 })->name('root');
+
+Route::get('/login', 'Web\Auth\LoginController@showLoginForm')->name('login');
+Route::post('/loginUser', 'Web\Auth\LoginController@login')->name('loginUser');
+
+Route::get('/register', 'Web\Auth\RegisterController@showRegistrationForm')->name('register');
+Route::post('/register', 'Admin\adminDataController@userRegistration')->name('registerUser');
+
+
+
+//  Guest Suggestions
+Route::post('suggestions', 'suggestionsController@guestSuggestions')->name('suggestions');
+
+Route::group(['prefix' => 'admin', 'namespace'=>'Admin', 'as'=>'Admin.'], function (){
+
+
+//    Route::post('/contributionsCats', 'adminDataController@contributionsCat')->name('contributionsCategory');
+
+
+    //  static Pages
+    include('chama/dashboardStaticPages.php');
+    // Process data
+    include('chama/dashboardProcessData.php');
+
+    // get Data
+    include('chama/getDashboardData.php');
+    // updates
+    include ('chama/updateDashboardData.php');
+
+    // Others
+    include('chama/miscFiles.php');
+
+
+
+
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 Route::get('/test', function () {
     return "_GET some test in admin area";
@@ -25,11 +100,9 @@ Route::get('/klove/{toString}', "KloveController@index");
 Route::get('/admin',  'Admin\Auth\LoginController@showLoginForm')->name('Admin');
 Route::post('/loginAdmin', 'Admin\Auth\LoginController@login')->name('loginAdmin');
 
-Route::get('/register', 'Web\Auth\RegisterController@showRegistrationForm')->name('register');
-Route::post('/registerUser', 'Web\Auth\RegisterController@register')->name('registerUser');
+//Route::post('/registerUser', 'Web\Auth\RegisterController@register')->name('registerUser');
 
-Route::get('/login', 'Web\Auth\LoginController@showLoginForm')->name('login');
-Route::post('/loginUser', 'Web\Auth\LoginController@login')->name('loginUser');
+
 
 
 Route::group(['prefix' => 'web', 'namespace'=>'Web', 'as'=>'Web.', 'middleware'=>'auth'], function () {
@@ -69,7 +142,7 @@ Route::group(['prefix' => 'web', 'namespace'=>'Web', 'as'=>'Web.', 'middleware'=
 
 });
 
-Route::group(['prefix'=>'admin','namespace'=>'Admin','as'=>"Admin.", 'middleware'=>'admin'], function () {
+Route::group(['prefix'=>'admiddn','namespace'=>'Admidsn','as'=>"Adsdmin.", 'middleware'=>'admsdin'], function () {
     //
 
     Route::get('/logout', 'Auth\LoginController@logout')->name('logout');

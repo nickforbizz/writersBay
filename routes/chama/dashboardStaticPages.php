@@ -20,6 +20,7 @@ Route::get('loans', 'get_dashboardStaticPages@viewLoans')->name('loan');
 Route::get('payouts', 'get_dashboardStaticPages@viewPayouts')->name('payout');
 
 Route::get('penalties', 'get_dashboardStaticPages@viewPenalties')->name('chamaaPenalty');
+Route::get('Assignpenalties', 'get_dashboardStaticPages@viewAssgPenalties')->name('AssgPenalty');
 
 Route::get('loanRequests', 'get_dashboardStaticPages@viewLoanRequests')->name('loanRequest');
 

@@ -1,11 +1,12 @@
-@extends('web.layoutsWeb.app')
+@extends('web.layoutsWeb.appWriter')
 
 @section('top-styles')
     <style>
         .card{
-            background-color:#275083d1;
+            background-color:#b1d4c9d1;;
             box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             padding: 90px 0px 50px 30px;
+            display: flex;
         }
     </style>
 @endsection
@@ -14,13 +15,32 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
+            <div class="card-header"> <h1> Register </h1>
+                <hr>
+
+            </div>
             <div class="card jumbotron">
-                <div class="card-header"> <b> Register </b></div>
+
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('Web.registerUser') }}">
+                    <form method="POST" action="{{ route('registerUser') }}">
                         {{ @csrf_field() }}
                         <div class="row">
+
+                            <div class="col-md-10">
+                                <div class="form-group ">
+                                    <label for="chama" class=" col-form-label text-md-right">Choose Chamaa</label>
+                                    <select name="chama_id" class="form-control" id="chama" required autofocus>
+
+                                        @foreach(\App\Models\Chama::where('status', 1)->get() as $chama)
+                                            <option value="{{ $chama->id }}"> {{ $chama->name }} chama </option>
+                                        @endforeach
+
+                                    </select>
+                                </div>
+                            </div>
+
+
                             <div class="col-md-5">
                                 <div class="form-group ">
                                     <label for="lname" class=" col-form-label text-md-right">First Name</label>
@@ -78,12 +98,12 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-5">
-                                <div class="form-group">
-                                    <label for="age" class="col-form-label text-md-right">age</label>
-                                    <input id="age" type="number" class="form-control" name="age" placeholder="age" required>
-                                </div>
-                            </div>
+                            {{--<div class="col-md-5">--}}
+                                {{--<div class="form-group">--}}
+                                    {{--<label for="age" class="col-form-label text-md-right">age</label>--}}
+                                    {{--<input id="age" type="number" class="form-control" name="age" placeholder="age" required>--}}
+                                {{--</div>--}}
+                            {{--</div>--}}
 
 
                             <div class="col-md-5">
@@ -100,12 +120,12 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-5">
-                                <div class="form-group">
-                                    <label for="address" class="col-md-4 col-form-label text-md-right">address</label>
-                                    <input id="address" type="text" class="form-control" name="address" placeholder="address" required>
-                                </div>
-                            </div>
+                            {{--<div class="col-md-5">--}}
+                                {{--<div class="form-group">--}}
+                                    {{--<label for="address" class="col-md-4 col-form-label text-md-right">address</label>--}}
+                                    {{--<input id="address" type="text" class="form-control" name="address" placeholder="address" required>--}}
+                                {{--</div>--}}
+                            {{--</div>--}}
 
                             <div class="form-group mb-3">
                                 <div class="col-md-6 offset-md-4">

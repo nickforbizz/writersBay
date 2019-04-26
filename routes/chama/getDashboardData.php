@@ -29,7 +29,7 @@ Route::get('/ChamaProfile/{id}', 'admin_getDataController@getupdateChamaAcc')->n
 Route::get('suggestions/{id}', 'admin_getDataController@getUserSuggestions')->name('getUserSuggestion');
 
 //    Notifications
-Route::get('Notifications/{id}', 'admin_getDataController@getNotifications')->name('notification');
+Route::get('chamaNotifications/{id}', 'admin_getDataController@getNotifications')->name('getNotification');
 
 
 

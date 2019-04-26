@@ -11,17 +11,18 @@ Route::post('/savingsContributions', 'adminDataController@createSavingsContribut
 
 //  Withdrawals
 Route::post('/withdrawalsCats', 'adminDataController@withdrawalsCat')->name('withdrawalsCategory');
-Route::post('/payoutWithdrawals', 'adminDataController@createPayoutsWithdrawals')->name('payoutWithdrawal');
+Route::get('/payoutWithdrawals/{id}/{amount}/{member_id}', 'adminDataController@createPayoutsWithdrawals')->name('payoutWithdrawal');
 Route::post('/requestLoans', 'adminDataController@createRequestedLoan')->name('requestLoan');
 Route::post('/loanWithdrawals', 'adminDataController@createLoanWithdrawals')->name('loanWithdrawal');
 
 
 //  Penalties
 Route::post('/penaltiesCats', 'adminDataController@penaltiesCat')->name('penaltiesCategory');
-Route::post('/Penalties', 'adminDataController@createPenalties')->name('penalty');
+Route::post('/Penalties', 'adminDataController@createPenalties')->name('memberPenalty');
 
 //    Members
-Route::post('/Members', 'adminDataController@createMembers')->name('member');
+Route::post('/Members', 'adminDataController@createMembers')->name('addMember');
+Route::post('/Admins', 'adminDataController@createAdmin')->name('addAdmin');
 Route::post('/MemberProfile', 'adminDataController@updateMemberAcc')->name('memberAcc');
 
 //    Chama
@@ -29,10 +30,10 @@ Route::post('/Chama', 'adminDataController@createChama')->name('chama');
 Route::post('/ChamaProfile', 'adminDataController@updateChamaAcc')->name('chamaAcc');
 
 //    Member Suggestions
-Route::post('suggestions', 'adminDataController@createUserSuggestions')->name('UserSuggestion');
+Route::post('/suggestions', 'adminDataController@createUserSuggestions')->name('createUserSuggestion');
 
 //    Notifications
-Route::post('Notifications', 'adminDataController@createNotifications')->name('notification');
+Route::post('/Notifications', 'adminDataController@createNotifications')->name('createNotification');
 
 
 
