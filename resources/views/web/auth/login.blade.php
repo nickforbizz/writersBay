@@ -1,4 +1,4 @@
-@extends('web.layoutsWeb.appWriter')
+@extends('web.layoutsWeb.app')
 
 @section('top-styles')
     <style>

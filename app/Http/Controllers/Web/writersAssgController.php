@@ -74,7 +74,16 @@ class writersAssgController extends Controller
     public function settings()
     {
         $page = "";
-        return view('web.settings', compact('page'));
+
+        $pf = "public/";
+        $userFile = str_replace($pf, '', \App\Models\WriterMediaProfile::
+        where('user_id',Auth::guard('web')
+            ->user()
+            ->id)
+            ->first()
+            ->media_link);
+
+        return view('web.settings', compact('page','userFile'));
     }
 
     public function viewOrders()

@@ -30,7 +30,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = 'Admin.home';
+    protected $redirectTo = 'login';
     use RegistersUsers;
 
     public function showRegistrationForm()
@@ -50,25 +50,71 @@ class RegisterController extends Controller
     // }
 
     //Handles registration request for user
+    /**
+     * @param Request $request
+     * @return array|\Illuminate\Http\RedirectResponse
+     */
     public function register(Request $request)
     {
 
-        //  Validates data
-        // $this->validator($request->all())->validate();
-
-       //Create user
        try {
            DB::beginTransaction();
 
-           $user = $this->create($request->all());
+
+           $validate = Validator::make($request->all(), [
+               'fname' => 'required|string|max:255',
+               'lname' => 'required|string|max:255',
+               'email' => 'required|string|email|max:255|unique:users',
+               'password' => 'required|string|confirmed',
+               'mobile' => 'required',
+               'national_id' => 'required',
+               'username'=> 'required'
+           ]);
+           if ($validate->fails()) {
+               $errors = ([
+                   'code'=> -1,
+                   'errs'=>$validate->errors()
+               ]);
+               return $errors;
+           }
+
+           $user =  User::create([
+               'fname' => $request->fname,
+               'lname' => $request->lname,
+               'sname' => $request->sname,
+               'email' => $request->email,
+               'username' => $request->username,
+               'password' => Hash::make($request->password),
+               'national_id' => $request->national_id,
+               'gender' => $request->gender,
+               'age' => $request->age,
+               'mobile' => $request->mobile,
+               'address' => $request->address,
+               'roles' => 'guest',
+           ]);
+
+
+//           $user = $this->createUser($request->all());
         //    $user = Auth::user();
            //Authenticates user
-           $this->guard()->login($user);
+//           $this->guard()->login($user);
 
-           DB::commit();
+           if($user){
 
-           return redirect()->route($this->redirectTo);
+               DB::commit();
+
+               return redirect()->route($this->redirectTo);
+
+           }else{
+
+               return 'error happened';
+           }
+
+
+
        } catch (\Exeption $e) {
+
+
            DB::rollback();
            report($e);
            return [
@@ -87,13 +133,7 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'fname' => 'required|string|max:255',
-            'lname' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
-            'mobile' => 'required',
-            'national_id' => 'required',
-            'username'=> 'required'
+
         ]);
     }
 
@@ -103,7 +143,7 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \App\User
      */
-    protected function create(array $data)
+    protected function createUser(array $data)
     {
         $user =  User::create([
             'fname' => $data['fname'],
@@ -117,7 +157,7 @@ class RegisterController extends Controller
             'age' => $data['age'],
             'mobile' => $data['mobile'],
             'address' => $data['address'],
-            'roles' => 'admin',
+            'roles' => 'guest',
         ]);
         // $user
         //     ->roles()

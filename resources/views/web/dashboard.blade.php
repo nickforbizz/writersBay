@@ -21,10 +21,11 @@
 
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="pull-right ">New Orders</div>
-                    <h1 class="page-header">Writer Portal</h1>
+                    <div class="pull-right arriveOrders">New Orders</div>
+                    <h1 class="page-header">Writer's Portal  </h1>
                 </div>
             </div><!--/.row-->
+
 
             <div class="panel panel-container">
                 <div class="row">
@@ -49,14 +50,15 @@
                             <div class="row no-padding"><em class="fa fa-xl fa-clipboard color-orange"></em>
                                 <div class="large">
                                         {{
-                                        \App\Models\Completedassignment::where(['id'=>
-                                        Auth::guard('web')->user()->id])
-                                        ->get()
+                                        \App\Models\Onprogressassignment::where('user_id',
+                                        Auth::guard('web')->user()->id)
+                                        ->where('status',1)
+                                        ->where('active',1)
                                         ->count()
 
                                         }}
                                 </div>
-                                <div class="text-muted">Completed Assignments</div>
+                                <div class="text-muted">Onprogress Assignments </div>
                             </div>
                         </div>
                     </div>
@@ -65,11 +67,10 @@
                             <div class="row no-padding"><em class="fa fa-xl fa-folder-open color-teal"></em>
                                 <div class="large">
                                     {{
-                                        \App\Models\Onrevisionassignment::where(['id'=>
-                                        Auth::guard('web')->user()->id])
+                                        \App\Models\Onrevisionassignment::where('user_id',
+                                        Auth::guard('web')->user()->id)
                                         ->where('status',1)
                                         ->where('active',1)
-                                        ->get()
                                         ->count()
 
                                         }}
@@ -83,11 +84,10 @@
                             <div class="row no-padding"><em class="fa fa-xl fa-paypal color-red"></em>
                                 <div class="large">
                                     {{
-                                        \App\Models\AssgPendingPayment::where(['id'=>
+                                        \App\Models\AssgPendingPayment::where(['user_id'=>
                                         Auth::guard('web')->user()->id])
                                         ->where('status',1)
                                         ->where('active',1)
-                                        ->get()
                                         ->count()
 
                                         }}
@@ -104,7 +104,19 @@
                     <div class="panel panel-default">
                         <div class="panel-body easypiechart-panel">
                             <h4>New Orders</h4>
-                            <div class="easypiechart" id="easypiechart-blue" data-percent="92" ><span class="percent">92%</span></div>
+                            <div class="easypiechart" id="easypiechart-blue"
+                                 data-percent="
+                                     {{
+                                        (\App\Models\Assignment::where('status', 1)->where('active', 1)->count() ) /
+                                         (\App\Models\Assignment::where('status', 1)->count() ) * 100
+                                     }}
+                                      " >
+                                <span class="percent">
+                                    {{
+                                        (\App\Models\Assignment::where('status', 1)->where('active', 1)->count() ) /
+                                         (\App\Models\Assignment::where('status', 1)->count() ) * 100
+                                     }} %
+                                </span></div>
                         </div>
                     </div>
                 </div>
@@ -112,7 +124,22 @@
                     <div class="panel panel-default">
                         <div class="panel-body easypiechart-panel">
                             <h4>Comments</h4>
-                            <div class="easypiechart" id="easypiechart-orange" data-percent="65" ><span class="percent">65%</span></div>
+                            <div class="easypiechart" id="easypiechart-orange"
+                                 data-percent="
+                                 {{
+                                        (\App\Models\ChatsUser::where('status', 1)->where('active', 1)->where(['user_id'=>
+                                        Auth::guard('web')->user()->id])->count() ) /
+                                         (\App\Models\Chat::where('status', 1)->count() ) * 100
+                                     }}
+                                            " >
+                                <span class="percent">
+                                    {{
+                                        (\App\Models\ChatsUser::where('status', 1)->where('active', 1)->where(['user_id'=>
+                                        Auth::guard('web')->user()->id])->count() ) /
+                                         (\App\Models\Chat::where('status', 1)->count() ) * 100
+                                     }} %
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -142,11 +169,11 @@
                                 </li>
                             </ul>
                             <span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em></span></div>
-                        <div class="panel-body">
+                        <div class="panel-body" >
                             @foreach(\App\Models\Chat::where('status', 1)->get() as $chat)
                                 @if(\App\Models\ChatsAdmin::where('chat_id', $chat->id)->first())
 
-                                    <ul>
+                                    <ul v-chat-scroll>
                                         <li class="left clearfix"><span class="chat-img pull-left">
                                             <img src="{{ asset('assets/writersBay/img/3d_graffiti_background_i-wallpaper-2560x1600.jpg') }}" alt="User Avatar" height="40px" width="40px" class="img-circle" />
                                             </span>

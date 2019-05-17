@@ -1,364 +1,299 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
 
-    @yield('page-title')
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <!-- Bootstrap Core CSS -->
-    <link href="{{ asset('assets/chama_dashboard/css/bootstrap.min.css') }}" rel="stylesheet">
+    <!-- Scripts -->
+    {{-- <script src="{{ asset('js/app.js') }}" defer></script> --}}
 
-    <!-- MetisMenu CSS -->
-    <link href="{{ asset('assets/chama_dashboard/css/metisMenu.min.css') }}" rel="stylesheet">
+    <!-- Fonts -->
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
 
-    <!-- Timeline CSS -->
-    <link href="{{ asset('assets/chama_dashboard/css/timeline.css') }}" rel="stylesheet">
+    <!-- Styles -->
+    {{-- <link href="{{ asset('css/app.css') }}" rel="stylesheet"> --}}
+    <link href="{{ asset('assets/writersBay/css/bootstrap.min.css') }}" rel="stylesheet">
+	<link href="{{ asset('assets/writersBay/css/font-awesome.min.css') }}" rel="stylesheet">
+	<link href="{{ asset('assets/writersBay/css/datepicker3.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/writersBay/css/styles.css') }}" rel="stylesheet">
+     <link href="{{ asset('assets/writersBay/DataTables/datatables.css') }}" rel="stylesheet">
 
-    <!-- Custom CSS -->
-    <link href="{{ asset('assets/chama_dashboard/css/startmin.css') }}" rel="stylesheet">
+    <style>
+    .tb_data{
+        cursor: pointer;
+    }.crd{
+        padding: 200px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        color: red !important;
+    }
 
-    <!-- Morris Charts CSS -->
-    <link href="{{ asset('assets/chama_dashboard/css/morris.css') }}" rel="stylesheet">
-
-    <!-- Custom Fonts -->
-    <link href="{{ asset('assets/chama_dashboard/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+    </style>
     @yield('top-styles')
+
 </head>
 <body>
-
-<div id="wrapper">
-
-    <!-- Navigation -->
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="{{ route('Admin.dashboard') }}">Chamaa</a>
-        </div>
-
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-        </button>
-
-        <ul class="nav navbar-nav navbar-left navbar-top-links">
-            <li><a href="{{ route('Admin.dashboard') }}"><i class="fa fa-home fa-fw"></i> Home</a></li>
-        </ul>
-
-        <ul class="nav navbar-right navbar-top-links">
-            <li class="dropdown navbar-inverse">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    <i class="fa fa-bell fa-fw"></i> <b class="caret"></b>
+    <div id="appy">
+        {{-- <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
+            <div class="container">
+                <a class="navbar-brand" href="{{ url('/') }}">
+                    {{ config('app.name', 'WritersBay') }}
                 </a>
-                <ul class="dropdown-menu dropdown-alerts">
-                    <li>
-                        <a href="#">
-                            <div>
-                                <i class="fa fa-comment fa-fw"></i> New Comment
-                                <span class="pull-right text-muted small">4 minutes ago</span>
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <div>
-                                <i class="fa fa-twitter fa-fw"></i> 3 New Followers
-                                <span class="pull-right text-muted small">12 minutes ago</span>
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <div>
-                                <i class="fa fa-envelope fa-fw"></i> Message Sent
-                                <span class="pull-right text-muted small">4 minutes ago</span>
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <div>
-                                <i class="fa fa-tasks fa-fw"></i> New Task
-                                <span class="pull-right text-muted small">4 minutes ago</span>
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <div>
-                                <i class="fa fa-upload fa-fw"></i> Server Rebooted
-                                <span class="pull-right text-muted small">4 minutes ago</span>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                        <a class="text-center" href="{{ route('Admin.chamaaNotification') }}">
-                            <strong>See All Alerts</strong>
-                            <i class="fa fa-angle-right"></i>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-            <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    <i class="fa fa-user fa-fw"></i> secondtruth <b class="caret"></b>
-                </a>
-                <ul class="dropdown-menu dropdown-user">
-                    <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
-                    </li>
-                    <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
-                    </li>
-                    <li class="divider"></li>
-                    <li><a href="{{ route('Admin.logout') }}"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
-                    </li>
-                </ul>
-            </li>
-        </ul>
-        <!-- /.navbar-top-links -->
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
 
-        <div class="navbar-default sidebar" role="navigation">
-            <div class="sidebar-nav navbar-collapse">
-                <ul class="nav" id="side-menu">
-                    <li class="sidebar-search">
-                        <div class="input-group custom-search-form">
-                            <div class="" style="text-transform: capitalize;align:center">
-                            <h4 class="text-primary text-center">
-                            {{ Auth::guard('web')->user()->username }}
-                            </h4>
-                            <span class="bg-info" style="padding: 10px;border-radius: 30px;">Online</span>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <!-- Left Side Of Navbar -->
+                    <ul class="navbar-nav mr-auto">
 
-                            </div>
+                    </ul>
 
+                    <!-- Right Side Of Navbar -->
+                    <ul class="navbar-nav ml-auto">
+                        <!-- Authentication Links -->
+                        @guest
+                            <li class="nav-item">
+                                @if (Route::has('Admin.login'))
+                                    <a class="nav-link" href="url('/login')">{{ __('Login') }}</a>
+                                @endif
+                            </li>
+                            <li class="nav-item">
+                                @if (Route::has('Admin.register'))
+                                    <a class="nav-link" href=" url('/register')">{{ __('Register') }}</a>
+                                @endif
+                            </li>
+                        @else
+                        @if (Auth::guard('admin')->user()))
+                            <li class="nav-item dropdown">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    {{ Auth::user()->name }} <span class="caret"></span>
+                                </a>
 
-                        </div>
-                        <!-- /input-group -->
-                    </li>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                       onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                        {{ __('Logout') }}
+                                    </a>
 
-
-                    <li>
-                        <a href="{{ route('Admin.dashboard') }}" class="active"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
-                    </li>
-
-                    <li>
-                        <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Users<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a href="{{ route('Admin.chamaMember') }}">Members</a>
-                            </li><li>
-                                <a href="{{ route('Admin.activateMembers') }}">Activate Members</a>
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                        @csrf
+                                    </form>
+                                </div>
                             </li>
-                            <li>
-                                <a href="{{ route('Admin.admin') }}">Admins</a>
-                            </li><li>
-                                <a href="{{ route('Admin.activateAdmins') }}">Activate Admin</a>
-                            </li>
-                        </ul>
-                        <!-- /.nav-second-level -->
-                    </li>
-                    <li>
-                        <a href="#"><i class="fa fa-wrench fa-fw"></i> Contributions<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a href="{{ route('Admin.contributionCategory') }}">Category</a>
-                            </li>
-                            <li>
-                                <a href="{{ route('Admin.basicPay') }}">Basic Pay</a>
-                            </li>
-                            <li>
-                                <a href="{{ route('Admin.miscalleneous') }}">Miscalleneous</a>
-                            </li>
-                            <li>
-                                <a href="{{ route('Admin.saving') }}">Savings</a>
-                            </li>
-                        </ul>
-                        <!-- /.nav-second-level -->
-                    </li>
-                    <li>
-                        <a href="#"><i class="fa fa-edit fa-fw"></i> Withdrawals<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a href="{{ route('Admin.withdrawalCategory') }}">Category</a>
-                            </li>
-                            <li>
-                                <a href="{{ route('Admin.payout') }}"> PayOuts</a>
-                            </li>
-                            <li>
-                                <a href="{{ route('Admin.loan') }}">Loans</a>
-                            </li>
-                        </ul>
-                        <!-- /.nav-second-level -->
-                    </li>
-
-                    <li>
-                        <a href="#"><i class="fa fa-edit fa-fw"></i> Penalties<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a href="{{ route('Admin.chamaaPenalty') }}"> Categories</a>
-
-                            </li>
-                            <li>
-                                <a href="{{ route('Admin.AssgPenalty') }}"> Assign Penalties</a>
-
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="{{ route('Admin.loanRequest') }}" class="active"><i class="fa fa-dashboard fa-fw"></i> Loan Requested</a>
-                    </li>
-                    <li>
-                        <a href="{{ route('Admin.chamaaNotification') }}" class="active"><i class="fa fa-dashboard fa-fw"></i> Notifications</a>
-                    </li>
-                    <li>
-                        <a href="{{ route('Admin.suggestion') }}" class="active"><i class="fa fa-dashboard fa-fw"></i> Suggestions</a>
-                    </li>
-
-                    <li>
-                        <a href="{{ route('Admin.logout') }}" class="active"><i class="fa fa-dashboard fa-fw"></i> logout</a>
-                    </li>
-                </ul>
+                            @endif
+                        @endguest
+                    </ul>
+                </div>
             </div>
+        </nav> --}}
+
+        <!-- Navbar lumino   -->
+
+        <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#sidebar-collapse"><span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span></button>
+                            <a class="navbar-brand" href="{{ route('Admin.home') }}">
+                                {{ config('app.name', 'WritersBay') }}
+                            </a>
+                        <ul class="nav navbar-top-links navbar-right">
+                            <li class="dropdown"><a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+                                <em class="fa fa-envelope"></em><span class="label label-danger">15</span>
+                            </a>
+                                <ul class="dropdown-menu dropdown-messages">
+                                    <li>
+                                        <div class="dropdown-messages-box"><a href="profile.html" class="pull-left">
+                                            <img alt="image" class="img-circle" src="http://placehold.it/40/30a5ff/fff">
+                                            </a>
+                                            <div class="message-body"><small class="pull-right">3 mins ago</small>
+                                                <a href="#"><strong>John Doe</strong> commented on <strong>your photo</strong>.</a>
+                                            <br /><small class="text-muted">1:24 pm - 25/03/2015</small></div>
+                                        </div>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <li>
+                                        <div class="dropdown-messages-box"><a href="profile.html" class="pull-left">
+                                            <img alt="image" class="img-circle" src="http://placehold.it/40/30a5ff/fff">
+                                            </a>
+                                            <div class="message-body"><small class="pull-right">1 hour ago</small>
+                                                <a href="#">New message from <strong>Jane Doe</strong>.</a>
+                                            <br /><small class="text-muted">12:27 pm - 25/03/2015</small></div>
+                                        </div>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <li>
+                                        <div class="all-button"><a href="#">
+                                            <em class="fa fa-inbox"></em> <strong>All Messages</strong>
+                                        </a></div>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- /.container-fluid -->
+        </nav>
+
+        <div class="container-fluid">
+            <!--/The sidebar-->
+            <div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
+                    <div class="profile-sidebar">
+                        <div class="profile-userpic">
+                            <img src="http://placehold.it/50/30a5ff/fff" class="img-responsive" alt="">
+                        </div>
+                        <div class="profile-usertitle">
+                            @if (Auth::guard('admin')->user())
+                            <div class="profile-usertitle-name">{{ Auth::guard('admin')->user()->username }}</div>
+                            <div class="profile-usertitle-status"><span class="indicator label-success"></span>Online</div>
+
+                            @endif
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="divider"></div>
+                    {{-- <form role="search">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search">
+                        </div>
+                    </form> --}}
+                    <ul class="nav menu">
+                        <li class="active"><a href="{{ route('Admin.home') }}"><em class="fa fa-dashboard">&nbsp;</em> Dashboard</a></li>
+                        <li class="parent "><a data-toggle="collapse" href="#assg">
+                            <em class="fa fa-navicon">&nbsp;</em> Assignments <span data-toggle="collapse" href="#assg" class="icon pull-right"><em class="fa fa-plus"></em></span>
+                            </a>
+                            <ul class="children collapse" id="assg">
+                                <li><a class="" href="{{ route('Admin.viewAssg') }}">
+                                    <span class="fa fa-arrow-right">&nbsp;</span> View Assg
+                                </a></li>
+                                <li><a class="" href="{{ route('Admin.onProgress') }}">
+                                        <span class="fa fa-arrow-right">&nbsp;</span> On Progress
+                                    </a></li>
+                                <li><a class="" href="{{ route('Admin.underReview') }}">
+                                        <span class="fa fa-arrow-right">&nbsp;</span> Under Review
+                                    </a></li>
+                                <li><a class="" href="{{ route('Admin.uploadAssg') }}">
+                                    <span class="fa fa-arrow-right">&nbsp;</span> Upload Assg
+                                </a>
+                                </li><li><a class="" href="{{ route('Admin.onRevision') }}">
+                                    <span class="fa fa-arrow-right">&nbsp;</span> Under Revision
+                                </a></li>
+                                <li><a class="" href="{{ route('Admin.pendingPay') }}">
+                                    <span class="fa fa-arrow-right">&nbsp;</span> Assg Pending Pay
+                                </a></li>
+                            </ul>
+                        </li>
+                        <li class="parent "><a data-toggle="collapse" href="#users">
+                            <em class="fa fa-user">&nbsp;</em> Writers <span data-toggle="collapse" href="#users" class="icon pull-right"><em class="fa fa-plus"></em></span>
+                            </a>
+                            <ul class="children collapse" id="users">
+                                <li><a class="" href="{{ route('Admin.viewUsers') }}">
+                                    <span class="fa fa-arrow-right">&nbsp;</span> View Writers
+                                </a></li>
+                                @if (Auth::guard('admin')->user()->role->name == 'superadmin')
+                                <li><a class="" href="{{ route('Admin.editUsers') }}">
+                                    <span class="fa fa-arrow-right">&nbsp;</span> Edit Writers
+                                </a></li>
+                                    @endif
+                            </ul>
+                        </li>
+                        {{-- <li><a href="charts.html"><em class="fa fa-bar-chart">&nbsp;</em> Charts</a></li>
+                        <li><a href="elements.html"><em class="fa fa-toggle-off">&nbsp;</em> UI Elements</a></li>
+                        <li><a href="panels.html"><em class="fa fa-clone">&nbsp;</em> Alerts &amp; Panels</a></li> --}}
+                    @if (Auth::guard('admin')->user()->role->name == 'superadmin')
+                    <li><a href="{{ route('Admin.roles')}}"><em class="fa fa-forumbee">&nbsp;</em> Roles</a></li>
+                    <li><a href="{{ route('Admin.categories')}}"><em class="fa fa-bookmark-o">&nbsp;</em> Categories</a></li>
+
+                    <li class="parent "><a data-toggle="collapse" href="#admins">
+                        <em class="fa fa-user-plus">&nbsp;</em> Admins <span data-toggle="collapse" href="#admins" class="icon pull-right"><em class="fa fa-plus"></em></span>
+                        </a>
+                        <ul class="children collapse" id="admins">
+                            <li><a class="" href="{{ route('Admin.viewAdmins') }}">
+                                <span class="fa fa-arrow-right">&nbsp;</span> View Admins
+                            </a></li>
+                            <li><a class="" href="{{ route('Admin.editAdmins') }}">
+                                <span class="fa fa-arrow-right">&nbsp;</span> Edit Admins
+                            </a></li>
+                            <li><a class="" href="{{ route('Admin.addAdmins') }}">
+                                <span class="fa fa-arrow-right">&nbsp;</span> Add Admin
+                            </a></li>
+                        </ul>
+                    </li>
+                    @endif
+                    <li><a href="{{ route('Admin.settings')}}"><em class="fa fa-cog">&nbsp;</em> Settings</a></li>
+
+
+
+                    <li><a href="{{ route('Admin.logout')}}"><em class="fa fa-power-off">&nbsp;</em> Logout</a></li>
+                    </ul>
+                </div>
+            <!--/.sidebar-->
+
+
+                <main class="py-2">
+                    @yield('content')
+                </main>
+
+                @component('utils.modal_wrapper', ["title"=>" This is where additional Information is displayed"])
+
+                @endcomponent
+
         </div>
-    </nav>
-    <div>
-
-        @component('Admin.utils.modal_default', ['title'=>'Additional Data About The Item'])
-        @endcomponent
-
+        <!-- .container -->
     </div>
+    <script src="{{ asset('assets/bootstrap4/jquery.1.11.1.js') }}"></script>
+    {{-- <script src="{{ asset('assets/bootstrap4/js/bootstrap.min.js') }}"></script> --}}
+    <script src="{{ asset('assets/writersBay/js/bootstrap.min.js') }}"></script>
+	<script src="{{ asset('assets/writersBay/js/custom.js') }}"></script>
+     <script src="{{ asset('assets/writersBay/DataTables/datatables.min.js') }}"></script>
+    {{-- <script src="js/bootstrap-datepicker.js"></script> --}}
+    <script src="{{ asset('assets/writersBay/js/chart.min.js') }}"></script>
+	<script src="{{ asset('assets/writersBay/js/chart-data.js') }}"></script>
+	<script src="{{ asset('assets/writersBay/js/easypiechart.js') }}"></script>
+	<script src="{{ asset('assets/writersBay/js/easypiechart-data.js') }}"></script>
+    <script>
+            $(document).ready(function() {
+                $('#dataTables-example').DataTable({
+                        responsive: true
+                });
+				$('#sidebarCollapse').on('click', function () {
+					$('#sidebar').toggleClass('active');
+				});
+			});
 
-    @yield('content')
-
-    <!-- jQuery -->
-    <script src="{{ asset('assets/chama_dashboard/js/jquery.min.js') }}"></script>
-
-    <!-- Bootstrap Core JavaScript -->
-    <script src="{{ asset('assets/chama_dashboard/js/bootstrap.min.js') }}"></script>
-
-    <!-- Metis Menu Plugin JavaScript -->
-    <script src="{{ asset('assets/chama_dashboard/js/metisMenu.min.js') }}"></script>
-
-    <!-- Morris Charts JavaScript -->
-    <script src="{{ asset('assets/chama_dashboard/js/raphael.min.js') }}"></script>
-    {{--<script src="{{ asset('assets/chama_dashboard/js/morris.min.js') }}"></script>--}}
-    {{--<script src="{{ asset('assets/chama_dashboard/js/morris-data.js') }}"></script>--}}
-
-    <!-- Custom Theme JavaScript -->
-    <script src="{{ asset('assets/chama_dashboard/js/startmin.js') }}"></script>
-    <script !src="">
-
-        function getThePatch(theRoute, id, model) {
-            $.ajax({
-                url: theRoute,
-                method: 'get',
-                success: function (data) {
-                    console.log(data);
-                    if( data.code == 1 && data.model == model){
-                        if (model == 'Member'){
-                            $(".edit").html(`
-                            @component('admin.utils.modal_data',["code"=>"Member"])
-
-                                    @endcomponent
-                                `);
-                        }else if(model == 'PenaltyCategory'){
-                            $(".edit").html(`
-                            @component('admin.utils.modal_data',["code"=>"PenaltyCategory"])
-
-                                    @endcomponent
-                                `);
-                        }
-                        else{
-                            $(".edit").html(`
-                            @component('admin.utils.modal_data',["code"=>"WithdrawCategory"])
-
-                             @endcomponent
-                              `);
-
-                        }
-                    } else if(data.code == -1){
-                        $(".edit").html(`
-                        @component('admin.utils.modal_data',["code"=>"errs"])
-
-                                @endcomponent
-                            `);
-                    }else if(data.code == 2){
-                        $(".edit").html(`
-                        @component('admin.utils.modal_data',["code"=>"success"])
-
-                                @endcomponent
-                            `);
-                    }
-                    // $(".edit").html('');
-
-
-
-                    $("#myModal").modal();
-                },
-                error: function (err) {console.log(err); alert("fatal Error")}
-            })
-        }
-
-
-        function updateData(the_route) {
-            $("#update").on("submit", function (event) {
-                event.preventDefault();
+            //    function ajax
+            function sendFormData(url, postdata){
                 $.ajax({
-                    url:the_route,
+                    url: url,
+                    data: postdata,
                     method: 'post',
-                    data: $("#update").serializeArray(),
+                    processData: false,
+                    contentType: false,
+                    cache: false,
                     success: function (data) {
+                        setTimeout(function () {
+                            location.reload()
+                        }, 1500);
+                        alert("success Delivery  "+data);
                         console.log(data);
-                        if (data.code == 1) {
-                            $('.edit').html(`
-                                @component('Admin.utils.modal_data',['code'=>'success'])
-                                    @endcomponent
-                                `);
-                            // thenReload();
-
-                        } else {
-                            $('.edit').html(`
-                                @component('Admin.utils.modal_data',['code'=>'errs'])
-                                    @endcomponent
-                                `);
-                        }
-                        $("#myModal").modal();
-
-
-                    },error: function (data) {
-                        $(".edit").html(`<div class="text-center"> <h3>Fatal Error While Updating...</h3> <p>Bye</p></div>`);
-                        $("#myModal").modal();
-
-                        console.log(data);
-
+                    },
+                    error: function (err) {
+                        console.log(err);
                     }
                 })
-            })
+            }
 
-        }
-
-
-        function thenReload() {
-            setTimeout(function () {
-                location.reload();
-                // alert("lllllllllll")
-            }, 1500)
-        }
 
     </script>
-
     @yield('bottom-scripts')
-
 </body>
 </html>

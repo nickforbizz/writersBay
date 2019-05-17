@@ -21,7 +21,7 @@
 
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="pull-right ">New Orders</div>
+                    <div class="pull-right arriveOrders">New Orders</div>
                     <h3 class="page-header">Completed Assignments:</h3>
                 </div>
                 <div class="col-12">
@@ -58,6 +58,46 @@
                     </div>
                     <!-- /.table-responsive -->
 
+
+
+
+
+
+                    <div class="container">
+                        <h2>Activate Modal with JavaScript</h2>
+                        <!-- Trigger the modal with a button -->
+                        <button type="button" class="btn btn-info btn-lg" id="myBtn">Open Modal</button>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="myModal" role="dialog">
+                            <div class="modal-dialog">
+
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">Modal Header</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Some text in the modal.</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+
+
+
+
+
+
+
                 </div>
                 <!-- /.panel-body -->
                 </div>
@@ -71,13 +111,22 @@
 @endsection
 
 @section('bottom-scripts')
+
     <script>
+
+        $(document).ready(function(){
+            $("#myBtn").click(function(){
+                alert("ewdewd");
+                $("#myModal").modal();
+            });
+        });
+
       $(document).ready(function () {
          // Take Order
-         $(document).on("click",'.'+tag, function () {
-                var order_id = $(this).attr("data-id");
-                var writer_id = {{ Auth::guard('web')->user()->id  }}
-         });
+             {{--$(document).on("click",'.'+tag, function () {--}}
+                    {{--var order_id = $(this).attr("data-id");--}}
+                    {{--var writer_id = {{ Auth::guard('web')->user()->id  }}--}}
+             {{--});--}}
 
     });
 

@@ -21,7 +21,7 @@
 
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="pull-right ">New Orders</div>
+                    <div class="pull-right arriveOrders">New Orders</div>
                     <h3 class="page-header">Assignments Under Review:</h3>
                 </div>
                 <div class="col-12">

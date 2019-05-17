@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
+use App\Models\AdminMediaProfile;
 use App\Models\AssgPendingPayment;
 use App\Models\Assignment;
 use App\Models\Category;
@@ -335,7 +336,6 @@ class DashboardGetDataController extends Controller
     }
 
 
-
     /**
      * Undocumented function
      *
@@ -620,6 +620,84 @@ class DashboardGetDataController extends Controller
         }
     }
 
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return mixed
+     */
+    public function updateAdmin(Request $request, $id)
+    {
+        $updateUser = Admin::where('id', $id)->update([
+            'fname' => $request->fname,
+            'lname' => $request->lname,
+            'username' => $request->username,
+            'email' => $request->email,
+            'mobile' => $request->mobile,
+            'bio' => $request->bio
+        ]);
+        if($updateUser){
+            return [
+                'code' => 1,
+                'msg' => 'Succesfully Updated'
+            ];
+        }else{
+            return [
+                'code' => -1,
+                'msg' => 'Error while Updating'
+            ];
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @return array|string
+     */
+    public function saveAdminImg(Request $request){
+
+        $validate = Validator::make($request->all(), [
+
+            'img_prf.*' => 'required|file',
+
+        ]);
+        if ($validate->fails()) {
+            $errors = ([
+                'code'=> -1,
+                'errs'=>$validate->errors()
+            ]);
+            return $errors;
+        }
+
+        $doc = $request->img_prf;
+
+        if (AdminMediaProfile::where('id', Auth::guard('web')->user()->id)->first() != null ){
+
+
+            AdminMediaProfile::where('id', Auth::guard('web')->user()->id )
+                ->where('status', 1)
+                ->update([
+                    'name' => $doc->getClientOriginalName(),
+                    'media_link' => Storage::putFile('public/AdminProfileImg', $doc),
+                    'type' => $doc->getClientOriginalExtension()
+                ]);
+
+
+            return "profile updated";
+
+        }else{
+            AdminMediaProfile::create([
+                'user_id' => Auth::guard('web')->user()->id,
+                'name' => $doc->getClientOriginalName(),
+                'media_link' => Storage::putFile('public/AdminProfileImg', $doc),
+                'type' => $doc->getClientOriginalExtension()
+            ]);
+            return "profile created";
+
+        }
+
+    }
 
 
 

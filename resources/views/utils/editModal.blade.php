@@ -170,5 +170,102 @@
         </div>
         </p>
     </div>
+
+
+
+@elseif($code == "edit_writers_profile")
+
+    <div>
+
+
+        <div class="form-group col-md-4 col-sm-6">
+            <label for="fname">First Name :</label>
+            <input type="text" name="fname" class="form-control" value="{{ Auth::guard('web')->user()->fname }}"  id="fname" required>
+        </div>
+
+        <div class="form-group col-md-4 col-sm-6">
+            <label for="lname">Last Name :</label>
+            <input type="text" name="lname" class="form-control" value="{{ Auth::guard('web')->user()->lname }}"  id="lname" required>
+        </div>
+
+        <div class="form-group col-md-4 col-sm-6">
+            <label for="username">Username :</label>
+            <input type="text" name="username" class="form-control" value="{{ Auth::guard('web')->user()->username }}"  id="username" required>
+        </div>
+
+        <div class="form-group col-md-6 col-sm-6">
+            <label for="email">Email :</label>
+            <input type="email" name="email" class="form-control" value="{{ Auth::guard('web')->user()->email }}"  id="email" required>
+        </div>
+
+        <div class="form-group col-md-6 col-sm-6">
+            <label for="mobile">Mobile :</label>
+            <input type="number" name="mobile" class="form-control" value="{{ Auth::guard('web')->user()->mobile }}"  id="mobile" required>
+        </div>
+
+        <div class="form-group col-md-12">
+            <label for="bio">Bio:</label>
+            <textarea name="bio"  class="form-control"  id="bio" cols="30" rows="6" required>{{ Auth::guard('web')->user()->bio }}</textarea>
+        </div>
+
+        {{csrf_field() }}
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="pull-right" style="margin-right:30px;">
+                    <input type="submit" class="btn btn-lg btn-success">
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+@elseif($code == "edit_admin_profile")
+
+    <div>
+
+
+        <div class="form-group col-md-4 col-sm-6">
+            <label for="fname">First Name :</label>
+            <input type="text" name="fname" class="form-control" value="{{ Auth::guard('admin')->user()->fname }}"  id="fname" required>
+        </div>
+
+        <div class="form-group col-md-4 col-sm-6">
+            <label for="lname">Last Name :</label>
+            <input type="text" name="lname" class="form-control" value="{{ Auth::guard('admin')->user()->lname }}"  id="lname" required>
+        </div>
+
+        <div class="form-group col-md-4 col-sm-6">
+            <label for="username">Username :</label>
+            <input type="text" name="username" class="form-control" value="{{ Auth::guard('admin')->user()->username }}"  id="username" required>
+        </div>
+
+        <div class="form-group col-md-6 col-sm-6">
+            <label for="email">Email :</label>
+            <input type="email" name="email" class="form-control" value="{{ Auth::guard('admin')->user()->email }}"  id="email" required>
+        </div>
+
+        <div class="form-group col-md-6 col-sm-6">
+            <label for="mobile">Mobile :</label>
+            <input type="number" name="mobile" class="form-control" value="{{ Auth::guard('admin')->user()->mobile }}"  id="mobile" required>
+        </div>
+
+        <div class="form-group col-md-12">
+            <label for="bio">Bio:</label>
+            <textarea name="bio"  class="form-control"  id="bio" cols="30" rows="6" required>{{ Auth::guard('admin')->user()->bio }}</textarea>
+        </div>
+
+        {{csrf_field() }}
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="pull-right" style="margin-right:30px;">
+                    <input type="submit" class="btn btn-lg btn-success">
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endif
 {{--this website was made by Wainaina Nicholas Waruingi of Mombex Ent contact him through +254707722247 or email nickforbiz@gmail.com--}}

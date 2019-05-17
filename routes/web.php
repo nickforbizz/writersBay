@@ -10,81 +10,35 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+use App\Events\Assignments;
+use App\Events\userEvent;
+use App\Models\User;
+use App\Notifications\AssignmentChat;
+use bnjns\LaravelNotifications\Facades\Notify;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Route;
+
 Route::get('/', function () {
-    return view('index');
+    return view('web.root');
 })->name('root');
 
-Route::get('/login', 'Web\Auth\LoginController@showLoginForm')->name('login');
-Route::post('/loginUser', 'Web\Auth\LoginController@login')->name('loginUser');
+Route::get('/event', function () {
 
-Route::get('/register', 'Web\Auth\RegisterController@showRegistrationForm')->name('register');
-Route::post('/register', 'Admin\adminDataController@userRegistration')->name('registerUser');
+event(new Assignments());
 
-
-
-//  Guest Suggestions
-Route::post('suggestions', 'suggestionsController@guestSuggestions')->name('suggestions');
-
-Route::group(['prefix' => 'admin', 'namespace'=>'Admin', 'as'=>'Admin.'], function (){
+return "uyuhjkhjk";
 
 
-//    Route::post('/contributionsCats', 'adminDataController@contributionsCat')->name('contributionsCategory');
-
-
-    //  static Pages
-    include('chama/dashboardStaticPages.php');
-    // Process data
-    include('chama/dashboardProcessData.php');
-
-    // get Data
-    include('chama/getDashboardData.php');
-    // updates
-    include ('chama/updateDashboardData.php');
-
-    // Others
-    include('chama/miscFiles.php');
+})->name('testNot');
 
 
 
+Route::get('/event_view', function () {
 
-
+return view("event_view");
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -95,14 +49,30 @@ Route::get('/test', function () {
 
 
 Route::get('/klove/{toString}', "KloveController@index");
+Route::get('WriterProfile{id}', function ($id){
+    $profile = \App\Models\User::find($id)->first();
+    return $profile;
+})->name('writerProfile');
+
+
+//Route::resource('writers', 'WriterProfileController')->only([
+//    'index', 'show'
+//]);
+Route::resource('writers', 'WriterProfileController')->parameters([
+    'show' => 'id'
+]);
+Route::post('writerUpdate/{id}', 'WriterProfileController@update');
 
 
 Route::get('/admin',  'Admin\Auth\LoginController@showLoginForm')->name('Admin');
 Route::post('/loginAdmin', 'Admin\Auth\LoginController@login')->name('loginAdmin');
 
-//Route::post('/registerUser', 'Web\Auth\RegisterController@register')->name('registerUser');
+Route::get('/register', 'Web\Auth\RegisterController@showRegistrationForm')->name('register');
+Route::post('/registerUser', 'Web\Auth\RegisterController@register')->name('registerUser');
 
 
+Route::get('/login', 'Web\Auth\LoginController@showLoginForm')->name('login');
+Route::post('/loginUser', 'Web\Auth\LoginController@login')->name('loginUser');
 
 
 Route::group(['prefix' => 'web', 'namespace'=>'Web', 'as'=>'Web.', 'middleware'=>'auth'], function () {
@@ -110,6 +80,21 @@ Route::group(['prefix' => 'web', 'namespace'=>'Web', 'as'=>'Web.', 'middleware'=
     // Route::get('/', function () {            , 'middleware'=>'auth'
     //     return view('web.welcome');
     // });
+
+     Route::get('/ChatTest', 'ChatController@ChatView');
+     Route::post('/ChatSend', 'ChatController@send');
+
+    Route::get('notificationTest', function (){
+
+
+        $user = \App\Models\User::where('id',1)->notify(new AssignmentChat);
+
+
+
+    });
+
+
+
     Route::get('/orderDetails/{id}', 'writersAssgController@orderDetails')->name('orderDetails/{id}');
     Route::post('/webMsg', 'chatsUserController@webMsg')->name('webMsg');
 
@@ -138,11 +123,12 @@ Route::group(['prefix' => 'web', 'namespace'=>'Web', 'as'=>'Web.', 'middleware'=
     Route::get('/logout', 'writersAssgController@theLogout')->name('logout');
 
     Route::post('/submitAssg', 'writersAssgController@submitAssg')->name('submitAssg');
+    Route::post('/updateWriterImgs', 'webController@saveWriterImg')->name('updateWriterImg');
     // Route::get('/home', 'HomeController@index')->name('home');
 
 });
 
-Route::group(['prefix'=>'admiddn','namespace'=>'Admidsn','as'=>"Adsdmin.", 'middleware'=>'admsdin'], function () {
+Route::group(['prefix'=>'admin','namespace'=>'Admin','as'=>"Admin.", 'middleware'=>'admin'], function () {
     //
 
     Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
@@ -190,6 +176,9 @@ Route::group(['prefix'=>'admiddn','namespace'=>'Admidsn','as'=>"Adsdmin.", 'midd
     Route::get('/getAdmin/{id}', 'DashboardGetDataController@getAdmin')->name('getAdmin');
 
     // POST Requests
+    Route::post('adminUpdate/{id}', 'DashboardGetDataController@updateAdmin')->name('updateAdmin');
+    Route::post('/updateAdminImgs', 'DashboardGetDataController@saveAdminImg')->name('updateAdminImg');
+
     Route::post('/registerAdmin', 'DashboardGetDataController@registerAdmin')->name('registerAdmin');
     Route::post('/uploadAssg', 'DashboardGetDataController@uploadAssg')->name('uploadAssg');
     Route::post('/editUser', 'DashboardGetDataController@editUser')->name('editUser');
@@ -205,6 +194,11 @@ Route::group(['prefix'=>'admiddn','namespace'=>'Admidsn','as'=>"Adsdmin.", 'midd
     Route::get('/downloadable/{file}', 'DownloadsController@downloadable')->name('downloadable');
     Route::get('/previewdoc/{file}', 'DownloadsController@previewDoc')->name('preview');
 
+    Route::get('/pagedownload/{id}', function($id){
+
+        return view('Admin.filedownload.assgfile', compact('id'));
+    })->name('pagedownload');
+
 
     Route::get('/webMsg/{id}', 'chatsController@adminMsg')->name('webMsg');
     Route::get('/AdminMsg', 'chatsController@adminChart')->name('AdminMsg');
@@ -213,9 +207,12 @@ Route::group(['prefix'=>'admiddn','namespace'=>'Admidsn','as'=>"Adsdmin.", 'midd
 
     // other
     Route::get('/home', 'HomeController@index')->name('home');
+
+
     Route::get('/test', function () {
         return "_GET some test in admin area";
     })->name('test');
+
     Route::post('/test', function () {
         return "_POST some test";
     })->name('testp');

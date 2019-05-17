@@ -61,7 +61,17 @@
 <body>
     <div id="appy">
 
-        <!-- Navbar nik   -->
+    <?php
+    $pf = "public/";
+    $userFile = str_replace($pf, '', \App\Models\WriterMediaProfile::
+    where('user_id',Auth::guard('web')
+        ->user()
+        ->id)
+        ->first()
+        ->media_link)
+    ?>
+
+        <!-- Navbar lumino   -->
 
         <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
                 <div class="container-fluid">
@@ -70,29 +80,14 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span></button>
-                            <a class="navbar-brand" href="{{ route('root') }}">
-                                {{--{{ config('app.name', 'Chamaa') }}--}}
-                                Chamaa
+                            <a class="navbar-brand" href="{{ route('Web.home') }}">
+                                {{ config('app.name', 'WritersBay') }}
                             </a>
 
                         <ul class="nav navbar-top-links navbar-right">
 
-                            <li class="dropdown"><a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-                                <em class="fa fa-envelope"></em><span class="label label-danger">5</span>
-                            </a>
-                                <ul class="dropdown-menu dropdown-messages">
-                                    <li>
-                                        <div class="dropdown-messages-box"><a href="profile.html" class="pull-left">
-                                            </a>
-                                            <div class="message-body"><small class="pull-right">3 mins ago</small>
-                                                <a href="#"><strong>John Doe</strong> commented on <strong>your photo</strong>.</a>
-                                            <br /><small class="text-muted">1:24 pm - 25/03/2015</small></div>
-                                        </div>
-                                    </li>
-                                    <li class="divider"></li>
+                            <notification-component></notification-component>
 
-                                </ul>
-                            </li>
                         </ul>
                     </div>
                 </div>
@@ -107,7 +102,17 @@
                 <div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
                         <div class="profile-sidebar">
                             <div class="profile-userpic">
-                                <img src="http://placehold.it/50/30a5ff/fff" class="img-responsive" alt="">
+
+                                @if($userFile == '' || $userFile == null)
+                                    <img src="{{ asset('assets/writersBay/img/3d_graffiti-wallpaper-2560x1440.jpg') }}"
+                                         alt="User Profile"  class="img-responsive" id="default-imgPrf"/>
+                                @else
+
+                                    <img src="{{ asset( 'storage/'.$userFile)}}"
+                                         alt="User Profile"  class="img-responsive" id="default-imgPrf"/>
+                                @endif
+
+
                             </div>
                             <div class="profile-usertitle">
                                 @if (Auth::guard('web')->user())
@@ -185,16 +190,19 @@
         </div>
         <!-- .container -->
     </div>
-    <script src="{{ asset('assets/bootstrap4/jquery.1.11.1.js') }}"></script>
+    <script src="{{ asset('assets/writersBay/js/jquery-1.11.1.min.js') }}"></script>
     {{-- <script src="{{ asset('assets/bootstrap4/js/bootstrap.min.js') }}"></script> --}}
     <script src="{{ asset('assets/writersBay/js/bootstrap.min.js') }}"></script>
-	<script src="{{ asset('assets/writersBay/js/custom.js') }}"></script>
+
+    {{--<script src="{{ asset('js/app.js') }}" defer></script>--}}
+
+    <script src="{{ asset('assets/writersBay/js/custom.js') }}"></script>
     {{-- <script src="{{ asset('assets/writersBay/DataTables4/datatables.min.js') }}"></script> --}}
      {{--<script src="{{ asset('assets/writersBay/js/bootstrap-datepicker.js') }}"></script>--}}
     <script src="{{ asset('assets/writersBay/js/chart.min.js') }}"></script>
 	<script src="{{ asset('assets/writersBay/js/chart-data.js') }}"></script>
 	<script src="{{ asset('assets/writersBay/js/easypiechart.js') }}"></script>
-	<script src="{{ asset('assets/writersBay/js/easypiechart-data.js') }}"></script>
+	{{--<script src="{{ asset('assets/writersBay/js/easypiechart-data.js') }}"></script>--}}
     <script>
             $(document).ready(function() {
                 // $('#dataTables-example').DataTable({
@@ -203,7 +211,36 @@
 				$('#sidebarCollapse').on('click', function () {
 					$('#sidebar').toggleClass('active');
 				});
-			});
+
+                $(".arriveOrders").on('click', function () {
+                    window.location = '{{ route('Web.orders') }}'
+                })
+
+
+            });
+
+        //    function ajax
+        function sendFormData(url, postdata){
+            $.ajax({
+                url: url,
+                data: postdata,
+                method: 'post',
+                processData: false,
+                contentType: false,
+                cache: false,
+                success: function (data) {
+                    alert("success Derivery");
+                    setTimeout(function(){
+                        location.reload();
+                    }, 1500)
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            })
+        }
+
+
 
         </script>
     @yield('bottom-scripts')

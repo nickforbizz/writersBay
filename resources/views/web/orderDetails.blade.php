@@ -64,14 +64,19 @@
         <div class="mainOrder ">
             <h3> Order Details</h3>
             <hr>
-            <p>
+
+
+            <div>
                 <h4><b>Title</b></h4>
                 {{ $order->title }}
-            </p>
-            <p>
+            </div>
+
+            <div>
                 <h4><b>Description</b> </h4>
                 {{ $order->description }}
-            </p>
+            </div>
+
+
             <div>
             <h4><b>Medias</b></h4>
 
@@ -101,26 +106,52 @@
         <div class="orderSide2">
             <h3>Additional Details</h3>
             <hr>
-            <p>
+
+
+            <div>
                 <h5><b>Required Pages</b></h5>
                 {{ $order->pages }}
-            </p>
-            <p>
+            </div>
+
+            <div>
                 <h5><b>Amount</b></h5>
                 {{ $order->amount }}
-            </p>
-            <p>
+            </div>
+
+
+            <div>
             <h5><b>Date Posted</b></h5>
             {{ $order->created_at->diffForHumans() }}
-            </p>
-            <p>
+            </div>
+
+
+            <div>
             <h5><b>Deadline</b></h5>
             {{ $order->deadline }}
-            </p>
-            <div style="margin-bottom: 70px">
-            <div class="pull-right" style="margin-right:20px;">
-                <button class="btn btn-success take-order" data-id="{{ $order->id }}">Take</button>
             </div>
+
+
+            <div style="margin-bottom: 70px">
+
+
+
+                @if(\App\Models\Onprogressassignment::where('status',1)->where('active', 1)->count() > 3)
+
+                    <hr>
+                <div class="pull-right" style="margin-right:20px;">
+
+                <button class="btn btn-success take-order" disabled data-id="{{ $order->id }}">Take</button>
+
+                </div>
+                <p class="">Finish the assignment on progress first</p>
+
+                @else
+                    <div class="pull-right" style="margin-right:20px;">
+
+                        <button class="btn btn-success take-order"  data-id="{{ $order->id }}">Take</button>
+
+                    </div>
+                @endif
 
             </div>
         </div>

@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Models\WriterMediaFilesAssg;
+use App\Models\WriterMediaProfile;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Validator;
 use Illuminate\Http\Request;
 use App\Models\AnonymousFeedback;
@@ -10,6 +14,21 @@ use App\Http\Controllers\Controller;
 
 class webController extends Controller
 {
+
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function webDashboard()
+    {
+        $page = "";
+        return view("web.dashboard", compact('page'));
+    }
+
+
+    /**
+     * @param Request $request
+     * @return array|\Illuminate\Http\RedirectResponse
+     */
     public function anonymousMsg(Request $request)
     {
        try {
@@ -47,9 +66,52 @@ class webController extends Controller
        }
     }
 
-    public function webDashboard()
-    {
-        $page = "";
-        return view("web.dashboard", compact('page'));
+
+    /**
+     * @param Request $request
+     * @return array|string
+     */
+    public function saveWriterImg(Request $request){
+
+        $validate = Validator::make($request->all(), [
+
+            'img_prf.*' => 'required|file',
+
+        ]);
+        if ($validate->fails()) {
+            $errors = ([
+                'code'=> -1,
+                'errs'=>$validate->errors()
+            ]);
+            return $errors;
+        }
+
+        $doc = $request->img_prf;
+
+        if (WriterMediaProfile::where('id', Auth::guard('web')->user()->id)->first() != null ){
+
+
+        WriterMediaProfile::where('id', Auth::guard('web')->user()->id )
+            ->where('status', 1)
+            ->update([
+                'name' => $doc->getClientOriginalName(),
+                'media_link' => Storage::putFile('public/writerProfileImg', $doc),
+                'type' => $doc->getClientOriginalExtension()
+            ]);
+
+
+            return "profile updated";
+
+        }else{
+            WriterMediaProfile::create([
+                'user_id' => Auth::guard('web')->user()->id,
+                'name' => $doc->getClientOriginalName(),
+                'media_link' => Storage::putFile('public/writerProfileImg', $doc),
+                'type' => $doc->getClientOriginalExtension()
+            ]);
+            return "profile created";
+
+        }
+
     }
 }

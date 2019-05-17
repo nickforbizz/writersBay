@@ -21,7 +21,7 @@
 
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="pull-right ">New Orders</div>
+                    <div class="pull-right arriveOrders">New Orders</div>
                     <h3 class="page-header">Assignments Under Revision:</h3>
                 </div>
                 <div class="col-12">
@@ -82,7 +82,7 @@
          // Take Order
          $(document).on("click",'.'+tag, function () {
                 var order_id = $(this).attr("data-id");
-                var writer_id = {{ Auth::guard('admin')->user()->id  }}
+                var writer_id = {{ Auth::guard('web')->user()->id  }}
          });
 
     });

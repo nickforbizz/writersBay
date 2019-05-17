@@ -1,165 +1,98 @@
 <!DOCTYPE html>
-<!--[if IE 8 ]><html class="no-js oldie ie8" lang="en"> <![endif]-->
-<!--[if IE 9 ]><html class="no-js oldie ie9" lang="en"> <![endif]-->
-<!--[if (gte IE 9)|!(IE)]><!--><html class="no-js" lang="en"> <!--<![endif]-->
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
-
-    <!--- basic page needs
-    ================================================== -->
     <meta charset="utf-8">
-    <title>E-chama</title>
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- mobile specific metas
-    ================================================== -->
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <!-- CSS
-  ================================================== -->
-    <link rel="stylesheet" href="{{ asset('assets/Infinity10/css/base.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/Infinity10/css/vendor.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/Infinity10/css/main.css') }}">
+    <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <!-- script
-    ================================================== -->
-    <script src="{{ asset('assets/Infinity10/js/modernizr.js') }}"></script>
-    <script src="{{ asset('assets/Infinity10/js/pace.min.js') }}"></script>
+    <!-- Scripts -->
+    <script src="{{ asset('js/app.js') }}" defer></script>
 
-    <!-- favicons
-     ================================================== -->
-    <link rel="shortcut icon" href="{{ asset('assets/Infinity10/favicon.ico') }}" type="image/x-icon">
-    <link rel="icon" href="{{ asset('assets/Infinity10/favicon.ico" type="image/x-icon') }}">
+    <!-- Fonts -->
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
 
+    <!-- Styles -->
+    <link href="{{ asset('css/appjk.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/writersBay/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/writersBay/Home/home.css') }}" rel="stylesheet">
+    @yield('top-styles')
 </head>
+<body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="60">
+    <div id="appr">
 
-<body id="top">
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{{ url('/') }}">
+                    {{ config('app.name', 'WritersBay') }}
+                </a>
+                </div>
+                <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#about">ABOUT</a></li>
+                    <li><a href="#services">SERVICES</a></li>
+                    <li><a href="#portfolio">PORTFOLIO</a></li>
+                    <li><a href="#pricing">PRICING</a></li>
+                    <li><a href="#contact">CONTACT</a></li>
 
-<!-- header
-================================================== -->
-<header>
+                    <!-- Authentication Links -->
+                    @guest
+                        <li class="nav-item">
+                            @if (Route::has('login'))
+                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                            @endif
+                        </li>
+                        <li class="nav-item">
+                            @if (Route::has('register'))
+                            <a class="nav-link" href=" {{ route('register') }}">{{ __('Register') }}</a>
+                            @endif
+                        </li>
+                    @else
+                        <li class="nav-item dropdown">
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                 <span class="caret"></span>
+                            </a>
 
-    <div class="header-logo">
-        <a href="index.html">E-chama</a>
-    </div>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown" style="    height: 50px;
+    background-color: #d66b6b;
+    text-align: -webkit-center;">
+                                <a class="dropdown-item" href="{{ route('Web.logout') }}"
+                                    onclivck="event.preventDefault();
+                                                    document.getElementById('logout-form').submit();">
+                                    {{ __('Logout') }}
+                                </a>
 
-    <a id="header-menu-trigger" href="#0">
-        <span class="header-menu-text">Menu</span>
-        <span class="header-menu-icon"></span>
-    </a>
-
-    <nav id="menu-nav-wrap">
-
-        <a href="#0" class="close-button" title="close"><span>Close</span></a>
-
-        <h3>E-chama.</h3>
-
-        <ul class="nav-list">
-            <li class="current"><a class="smoothscroll" href="#home" title="">Home</a></li>
-            <li><a class="smoothscroll" href="#about" title="">About</a></li>
-            <li><a class="smoothscroll" href="#services" title="">Services</a></li>
-            <li><a class="smoothscroll" href="#contact" title="">Contact</a></li>
-            <li><a class="" href="{{ route('login') }}" title="Log in">Sign In</a></li>
-            <li><a class="" href="{{ route('register') }}" title="">Sign UP</a></li>
-        </ul>
-
-        <p class="sponsor-text">
-            Looking for an awesome and reliable webhosting? Try <a href="http://www.dreamhost.com/r.cgi?287326|STYLESHOUT">DreamHost</a>.
-            Get <span>$50 off</span> when you sign up with the promocode <span>styleshout</span>.
-            <!-- Simply type	the promocode in the box labeled “Promo Code” when placing your order. -->
-        </p>
-
-
-        @yield('content')
-
-        <!-- footer
-================================================== -->
-        <footer>
-            <div class="footer-main">
-
-                <div class="row">
-
-                    <div class="col-five tab-full footer-about">
-
-                        <h4 class="h05">E-chama.</h4>
-
-                        <p>Proin eget tortor risus. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Nulla porttitor accumsan tincidunt. Nulla porttitor accumsan tincidunt. Proin eget tortor risus.</p>
-
-                    </div> <!-- end footer-about -->
-
-                    <div class="col-three tab-full footer-social">
-
-                        <h4 class="h05">Follow Us.</h4>
-
-                        <ul class="list-links">
-                            <li><a href="#">Facebook</a></li>
-                            <li><a href="#">Twitter</a></li>
-                            <li><a href="#">Instagram</a></li>
-                            <li><a href="#">Behance</a></li>
-                            <li><a href="#">Dribble</a></li>
-                        </ul>
-
-                    </div> <!-- end footer-social -->
-
-                    <div class="col-four tab-full footer-subscribe end">
-
-                        <h4 class="h05">Get Notified.</h4>
-
-                        <p>Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Praesent sapien massa.</p>
-
-                        <div class="subscribe-form">
-
-                            <form id="mc-form" class="group" novalidate="true">
-
-                                <input type="email" value="" name="dEmail" class="email" id="mc-email" placeholder="type email" required="">
-
-                                <!-- <input type="submit" name="subscribe" > -->
-                                <button><i class="icon-mail"></i></button>
-
-                                <label for="mc-email" class="subscribe-message"></label>
-
-                            </form>
-
-                        </div>
-
-                    </div> <!-- end footer-subscribe -->
-
-                </div> <!-- end row -->
-
-            </div> <!-- end footer-main -->
-
-            <div class="footer-bottom">
-
-                <div class="row">
-
-                    <div class="col-twelve">
-                        <div class="copyright">
-                            <span>© Copyright E-chama 2019.</span>
-                            <span>Design by <a href="http://www.styleshout.com/">styleshout</a></span>
-                        </div>
-                    </div>
+                                <form id="logout-form" action="{{ route('Web.logout') }}" method="POST" style="display: none;">
+                                    @csrf
+                                </form>
+                            </div>
+                        </li>
+                    @endguest
+                </ul>
 
                 </div>
-
-            </div> <!-- end footer-bottom -->
-
-            <div id="go-top">
-                <a class="smoothscroll" title="Back to Top" href="#top">
-                    <i class="fa fa-long-arrow-up" aria-hidden="true"></i>
-                </a>
             </div>
-        </footer>
+        </nav>
 
-        <div id="preloader">
-            <div id="loader"></div>
-        </div>
 
-        <!-- Java Script
-        ================================================== -->
-        <script src="{{ asset('assets/Infinity10/js/jquery-2.1.3.min.js') }}"></script>
-        <script src="{{ asset('assets/Infinity10/js/plugins.js') }}"></script>
-        <script src="{{ asset('assets/Infinity10/js/main.js') }}"></script>
-
+        <main class="py-4">
+            @yield('content')
+        </main>
+    </div>
+    <script src="{{ asset('assets/bootstrap4/jquery.1.11.1.js') }}"></script>
+    <script src="{{ asset('assets/writersBay/js/bootstrap.min.js') }}"></script>
+    @yield('bottom-scripts')
 </body>
-
 </html>
+<!--this website was made by Wainaina Nicholas Waruingi of Mombex Ent contact him through +254707722247 or email nickforbiz@gmail.com <a href="mombexent.com">Mombexent.com </a> -->
+<!--this website was made by Wainaina Nicholas Waruingi of Mombex Ent contact him through +254707722247 or email nickforbiz@gmail.com-->
